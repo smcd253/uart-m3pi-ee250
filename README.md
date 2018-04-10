@@ -62,34 +62,76 @@ this matters but we have found many reports of needing to do this on forums.
 LPC1768:
 
 Updating the LPC1768 is very simple, and an updated firmware is needed for 
-mbed OS 5+ support. Follow the instructions at this link.
+mbed OS 5+ support. Follow the instructions at 
+[this page.](https://os.mbed.com/handbook/Firmware-LPC1768-LPC11U24)
+The firmware revision we use is 141212.
 
 ESP8266-01:
 
 Updating the ESP8266-01 (or simply ESP-01) is a more involved process. First, we have found that
 using an mbed board as a serial passthrough does NOT work very well. It works if
 you use specific esptool versions and slow down the flash block sizes. Please 
-purchase an FTDI board with a 3.3v output to save you the headache. We specifically used the [need link and name of board here]. 
+purchase an FTDI board with a 3.3V output to save you the headache. We 
+specifically used the [need link and name of board here]. 
 
-Clone the latest version of the esptool at this repo. Also, clone the ESP8266_NONOS_SDK repository here. The ESP8266 
-comes in very many flavors, and there are many revisions (and manufacturers?) of the ESP-01. Hopefully, the settings and version 
-we successfully used will work for you. The binaries we used were from the master branch at the commit 509eae8515793ec62f6501e2783c865f9a8f87e3. Since we have the 1MB flash variant, we used the following binary files. Consolidate all the files in one folder:
+Clone the latest version of the 
+[esptool](https://github.com/espressif/esptool) to flash your ESP-01. Also, 
+clone the 
+[ESP8266_NONOS_SDK](https://github.com/espressif/ESP8266_NONOS_SDK) repository 
+to get the binaries we used to flash our ESP-01. The ESP8266 comes in very many 
+flavors, and there are many revisions (and manufacturers?) of the ESP-01. 
+Hopefully, the settings and version we successfully used will also work for you. 
+The binaries we used were from the master branch at the commit 
+[509eae8515793ec62f6501e2783c865f9a8f87e3](https://github.com/espressif/ESP8266_NONOS_SDK/tree/509eae8515793ec62f6501e2783c865f9a8f87e3)
+of the ESP8266_NONOS_SDK repository. Since we have the 1MB flash variant, we 
+used the binary files listed below. To prepare for flashing, consolidate all the 
+following binary files into one folder:
 
 * boot_v1.6.bin
 * user1.1024.new.2.bin
 * esp_init_data_default.bin
 * blank.bin
 
-Then, flash using the following commands:
+Then, flash using the following commands. Make sure to change the port value
+accordingly to your workspace:
 
-    git clone ------
-    cd esptool
-    ./esptool.py --port /dev/ttyUSB0 --baud 115200 write_flash -fm dout -fs 1MB -ff 26m 0x00000 ~/toflash/boot_v1.6.bin 0x01000 ~/toflash/user1.1024.new.2.bin 0xfc000 ~/toflash/esp_init_data_default.bin 0x7e000 ~/toflash/blank.bin
+    cd esptool/
+    ./esptool.py --port /dev/ttyUSB0 --baud 115200 write_flash -fm dout -fs 1MB -ff 26m 0x00000 path/to/binaries/boot_v1.6.bin 0x01000 path/to/binaries/user1.1024.new.2.bin 0xfc000 path/to/binaries/esp_init_data_default.bin 0x7e000 path/to/binaries/blank.bin
 
-* 
+To test if the flash worked, you can use our example.
 
-Download the python-based esptool at this
-for you. Your results may vary. you use to flash as well as the version
-of the pre-compiled non-OS firmware binaries 
+## Compiling this Example in Linux
 
-Currently under construction.....
+It is possible to import this example into the mbed OS online compiler to
+build. However, we only provide instructions for compiling using mbed-cli. 
+First, install the pre-reqs (mbed-cli only currently supports python2 so please
+install pip2 using the get-pip.py script that can be found online 
+`python2 get-pip.py`):
+
+1. pip2 install mbed-cli
+2. Install python packages: `pip2 install -r requirements.txt`
+3. Install python, libusb and libncursus (i386 to be compatible with arm-none-eabi-gdb)
+    
+        sudo apt-get install python libusb-1.0-0-dev libncurses5:i386
+
+4. It might be necessary to update your USB settings to get non-root access to DAP:
+
+        sudo sh -c 'echo SUBSYSTEM==\"usb\", ATTR{idVendor}==\"0d28\", ATTR{idProduct}==\"0204\", MODE:=\"666\" > /etc/udev/rules.d/mbed.rules' 
+        sudo /etc/init.d/udev restart 
+
+The next step is to initialize the mbed project and designate the compiler and
+target. First make sure to clone this repository or fork the repository and 
+clone your fork.
+
+```
+cd m3pi-mqtt-ee250/
+mbed deploy
+mbed new .
+mbed toolchain GCC_ARM
+mbed target LPC1768
+```
+
+
+
+
+

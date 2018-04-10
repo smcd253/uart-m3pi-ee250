@@ -61,8 +61,9 @@ extern "C" void mbed_reset();
 #define WIFI_HW_RESET_PIN       p26
 
 /* Using a hostname instead of IP address has been unverified by us */
-#define MQTT_BROKER_IPADDR      "192.168.29.91"
-#define MQTT_BROKER_PORT        1883
+//128.125.124.160
+#define MQTT_BROKER_IPADDR      "128.125.124.160"
+#define MQTT_BROKER_PORT        11000
 
 /* turn on easy-connect debug prints */
 #define EASY_CONNECT_LOGGING    true
@@ -74,6 +75,8 @@ InterruptIn pushbutton(p8);
  * Lock this global mutex before any calls to publish(). 
  */
 Mutex mqttMtx;
+
+static char *topic = "m3pi-mqtt-ee250";
 
 void pushbuttonCallback() {
     printf("button pushed\n");
@@ -180,11 +183,6 @@ int main()
     if ((retval = client.connect(data)) != 0)
         printf("connect returned %d\n", retval);
 
-#if MASTER_NODE
-    char *topic = "mbed-wifi-master";
-#else 
-    char *topic = "mbed-wifi-example";
-#endif
 
     /* define MQTTCLIENT_QOS2 as 1 to enable QOS2 (see MQTTClient.h) */
     /* Setup the callback to handle messages that arrive */
@@ -198,7 +196,6 @@ int main()
     /* pass in pointer to client so led thread can client.publish() messages */
     ledThr.start(callback(LEDThread, (void *)&client));
     printThr.start(printThread);
-
 
     /* The main thread will now run in the background to keep the MQTT/TCP 
      connection alive. MQTTClient is not an asynchronous library. Paho does
