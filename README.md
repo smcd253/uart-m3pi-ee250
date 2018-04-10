@@ -1,15 +1,11 @@
-mbed-esp8266-mqtt-example
+EE 250L Spring 2018: Example to run MQTT using an m3pi and ESP8266 device.
 
 ## Summary
 
 The main purpose for this repository is to show an educational example of a
 multi-threaded, (mostly) event-based MQTT application built on top of mbed OS 
 using the ESP8266-01 wifi interface. This code is configured for the mbed 
-LPC1768 board, but should be compatible for other mbed OS capatible boards. For
-those who attended the Frontiers in Education (FIE) 2017 workshop, we have the
-powerpoint slides hosted here. Please note we will not be updating the slides
-through time. Please refer to the FIE_WORKSHOP release tag to see the original
-code we used in the workshop.
+LPC1768 board, but should be compatible for other mbed OS capatible boards.
 
 ## Preface
 
@@ -17,26 +13,24 @@ This repository is intended for educational purposes. The code here is heavily
 commented, and we absolutely welcome any recommendations to improve the code or 
 documentation. Please communicate to us via an issue. Pull requests are welcome!
 
-
 ## Quick Start (to run this example out of the box)
 
 Materials Needed:
 
-* 1) Update the firmware of the LPC1768 and ESP8266-01 
-* 2) Follow the Fritzing diagram to connect the LPC1768 to the ESP8266-01 w/ a pushbutton
-* 3) Start an MQTT broker and edit the ipaddr/pw macros in main.cpp accordingly
-* 4) Configure your mbed_app.json with your wifi SSID and PW
-* 5) Compile with MASTER_NODE=0 in mbed_app.json and flash a master node
-* 6) Compile with MASTER_NODE=1 and flash as many slave nodes you want
-* 7) Boot everything up. Press the pushbutton on the master node and it should
-publish a LED blink command to all slave nodes. The buttons on the slave nodes
-publishes the command to the master.
+1) Update the firmware of the LPC1768 and ESP8266-01 
+2) Follow the Fritzing diagram to connect the LPC1768 to the ESP8266-01
+3) Edit the MQTT broker hostname and port macros in main.cpp accordingly
+4) Configure your mbed_app.json with your wifi SSID and PW
+7) Boot everything up. To test if everything is working, subscribe to [topic] 
+and publish to [topic].
 
 ## Motivation
 
 1) While mbed OS is well documented with many examples (including examples of
 using MQTTClient), there is a lack of more complex example applications to 
-illustrate the use of mbed OS, especially using MQTT and interfacing with the ESP8266 chip.
+illustrate the use of the mbed OS API. In addition, there is not a single 
+place that documents how to run MQTT with an ESP8266 device in mbed OS. This
+repository is provided to help fill these gaps.
 
 2) Covering ISRs, polling loops, etc. is the first step of learning embedded 
 programming. The next step is to equip students with the ability to program 
@@ -44,21 +38,24 @@ richer applications. Embedded operating systems and programming design patterns
 can empower students to create these applications with cleaner code. This 
 application example uses the simple dispatcher programming pattern with the use 
 of mbed OS libraries typically available on other embedded OSes. Patterns are
-hard for students to wrap their head around, and teaching from a book is not 
-very effective. We have found showing examples where a  pattern is useful and 
-having students develop using patterns helps students understand the usefulness 
-of patterns and create richer applications (with more organized code!). One way 
-to use this repository is to have the students explore by reading through this 
-example carefully and running this code. Then, have the students specifically 
-use this example (i.e. the programming pattern provided) to create a richer 
-application of their own.
+hard for students to wrap their head around, and teaching from a book has not 
+shown to be very effective. We have found showing deeper examples illustrating 
+how a pattern is useful and having students develop using the pattern helps 
+students understand their uses and overall create richer applications (with
+more organized code!). One way to use this repository is start by reading 
+through this example carefully and running the code. Then, use the structure
+of this example and cater it to your target application.
 
 ## Powering the ESP8266-01
 
-The ESP8266-01 (or ESP-01) chip takes a 3.3v power supply. Powering it with 5v
-may burn the chip. It needs a clean 3.3v power 
-supply so filtering a 3.3v output from the mbed board with a large capacitor 
-(we've used a 100uF+ capacitor just in case) will help prevent the ESP-01 from random power cycles. Also, even though the GPIO2 pin is not used, we connect it to VCC (high) to try to further prevent power cycles (we are not quite sure if this matters).
+The ESP8266-01 (or ESP-01) chip takes a 3.3V power supply. Powering it with 5v
+may burn the chip, so please be careful with this, especially because the 
+LPC1768 has a 5V output. The ESP-01 needs a clean 3.3V power 
+supply so filtering a 3.3V output from the mbed board with a large capacitor 
+(we have used 100uF+ capacitors just in case) will help prevent the ESP-01 from 
+random power cycles. Also, even though the GPIO2 pin is not used, we connect it 
+to VCC (high) to try to further prevent power cycles. We are not quite sure if 
+this matters but we have found many reports of needing to do this on forums.
 
 ## Updating the mbed LPC1768 and ESP8266-01 Firmware
 
