@@ -114,7 +114,7 @@ accordingly to your workspace:
 
 To test if the flash worked, you can use our example.
 
-## Compiling this Example in Linux
+## Compiling this Example in Linux (this may work on your rpi too!)
 
 It is possible to import this example into the mbed OS online compiler to
 build. However, we only provide instructions for compiling using mbed-cli. 
