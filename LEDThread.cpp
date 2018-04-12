@@ -53,7 +53,7 @@ Mail<MailMsg, LEDTHREAD_MAILBOX_SIZE> LEDMailbox;
 
 static DigitalOut led2(LED2);
 
-static const char *topic = "m3pi-mqtt-example/led-thread";
+static const char *topic = "m3pi-mqtt-ee250/led-thread";
 
 void LEDThread(void *args) 
 {
