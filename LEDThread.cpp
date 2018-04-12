@@ -53,6 +53,8 @@ Mail<MailMsg, LEDTHREAD_MAILBOX_SIZE> LEDMailbox;
 
 static DigitalOut led2(LED2);
 
+const char *topic = "m3pi-mqtt-example";
+
 void LEDThread(void *args) 
 {
     MQTT::Client<MQTTNetwork, Countdown> *client = (MQTT::Client<MQTTNetwork, Countdown> *)args;
@@ -61,13 +63,6 @@ void LEDThread(void *args)
     osEvent evt;
     char pub_buf[16];
 
-#if MASTER_NODE
-    /* publish to slave nodes */ 
-    const char *topic = "mbed-wifi-example";
-#else
-    /* publish to master node */
-    const char *topic = "mbed-wifi-master";
-#endif
 
     while(1) {
 
@@ -81,20 +76,15 @@ void LEDThread(void *args)
             /* the second byte in the message denotes the action type */
             switch (msg->content[1]) {
                 case LED_PUBLISH_BLINK_FAST:
-#if MASTER_NODE
                     printf("LEDThread: pushbutton pressed. publishing blink"
-                           " fast command to slave nodes\n");
-#else
-                    printf("LEDThread: pushbutton pressed. publishing blink"
-                           " fast command to master node\n");
-#endif
+                           " fast command to all nodes\n");
                     pub_buf[0] = FWD_TO_LED_THR;
                     pub_buf[1] = LED_BLINK_FAST;    
                     message.qos = MQTT::QOS0;
                     message.retained = false;
                     message.dup = false;
                     message.payload = (void*)pub_buf;
-                    message.payloadlen = 2 + 1; //+1 for null char
+                    message.payloadlen = 2 + 1; //+1 for null char since MQTT payloads are strings
                     /* Lock the global MQTT mutex before publishing */
                     mqttMtx.lock();
                     client->publish(topic, message);
