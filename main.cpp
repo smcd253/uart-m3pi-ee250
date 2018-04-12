@@ -77,44 +77,37 @@ Mutex mqttMtx;
 
 static char *topic = "m3pi-mqtt-ee250";
 
-void pushbuttonCallback() {
-    printf("button pushed\n");
-    MailMsg *msg;
-
-    /* send to LED thread which takes care of publishing blink fast commands */
-    msg = getLEDThreadMailbox()->alloc();
-    if (!msg) {
-        printf("LEDThreadMailbox full!\n");
-        return;
-    }
-    msg->content[0] = FWD_TO_LED_THR;
-    msg->content[1] = LED_PUBLISH_BLINK_FAST;
-    msg->length = 2;
-    getLEDThreadMailbox()->put(msg);
-}
-
 /* Callback for any received MQTT messages */
 void messageArrived(MQTT::MessageData& md)
 {
     MQTT::Message &message = md.message;
     MailMsg *msg;
 
-    /* our messaging standard says the first byte denotes which thread to fwd to */
+    /* our messaging standard says the first byte denotes which thread to 
+       forward the packet payload to */
     char fwdTarget = ((char *)message.payload)[0];
 
-    /* Ship (or "dispatch") entire message via mail to threads since the 
-       reference to messages will disappear soon after this callback returns */
+    /* Ship (or "dispatch") the entire message via Mail to threads since the 
+       reference to messages will be destroyed by the MQTT thread when this 
+       callback returns */
     switch(fwdTarget)
     {
         case FWD_TO_PRINT_THR:
             printf("fwding to print thread\n");
+
+            /* allocate the memory for a piece of mail */
             msg = getPrintThreadMailbox()->alloc();
+
             if (!msg) {
                 printf("print thread mailbox full!\n");
                 break;
             }
+
+            /* copy the message into the newly allocated MailMsg struct */
             memcpy(msg->content, message.payload, message.payloadlen);
             msg->length = message.payloadlen;
+
+            /* put the piece of mail into the target thread's mailbox */
             getPrintThreadMailbox()->put(msg);
             break;
         case FWD_TO_LED_THR:
@@ -137,10 +130,6 @@ void messageArrived(MQTT::MessageData& md)
 
 int main()
 {
-    /* attach callback to pushbutton interrupt */
-    pushbutton.mode(PullUp);
-    pushbutton.rise(&pushbuttonCallback);
-
     wait(1); //delay startup 
     printf("Resetting ESP8266 Hardware...\n");
     wifiHwResetPin = 0;
@@ -184,22 +173,33 @@ int main()
 
 
     /* define MQTTCLIENT_QOS2 as 1 to enable QOS2 (see MQTTClient.h) */
-    /* Setup the callback to handle messages that arrive */
+    /* This call attaches the messageArrived callback to handle MQTT messages 
+       that arrive */
     if ((retval = client.subscribe(topic, MQTT::QOS0, messageArrived)) != 0)
         printf("MQTT subscribe returned %d\n", retval);
 
-    /* launch threads */
+    /* This is a good point to launch your threads. If you want to create 
+       another thread, you can look at the structure of the two threads we 
+       provided and make a copy of it. Otherewise, you can gut out the two 
+       threads and insert your application code. Read the LEDThread and 
+       PrintThread files to understand how these threads work.*/
     Thread ledThr;
     Thread printThr;
 
-    /* pass in pointer to client so led thread can client.publish() messages */
+    /* Here, we pass in a pointer to the MQTT client so the LED thread can 
+       client.publish() messages */
     ledThr.start(callback(LEDThread, (void *)&client));
+
+    /* Here, we do not pass the pointer in. This means the printing thread 
+       won't be able to publish any MQTT messages. Modify this accordingly if
+       you need to publish. */
     printThr.start(printThread);
 
     /* The main thread will now run in the background to keep the MQTT/TCP 
      connection alive. MQTTClient is not an asynchronous library. Paho does
      have MQTTAsync, but some effort is needed to adapt mbed OS libraries to
-     be used by the MQTTAsync library. */
+     be used by the MQTTAsync library. Please do NOT do anything else in this
+     thread. Let it serve as your background MQTT thread. */
     while(1) {
         Thread::wait(1000);
         printf("main: yielding...\n", client.isConnected());
@@ -207,7 +207,7 @@ int main()
         if(!client.isConnected())
             mbed_reset(); //connection lost! software reset
 
-        /* yield() needs to be called at least once per keepAliveInterval */
+        /* yield() needs to be called at least once per keepAliveInterval. */
         client.yield(1000);
     }
 

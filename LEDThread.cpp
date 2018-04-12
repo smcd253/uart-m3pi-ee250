@@ -53,7 +53,7 @@ Mail<MailMsg, LEDTHREAD_MAILBOX_SIZE> LEDMailbox;
 
 static DigitalOut led2(LED2);
 
-const char *topic = "m3pi-mqtt-example";
+static const char *topic = "m3pi-mqtt-example/led-thread";
 
 void LEDThread(void *args) 
 {
@@ -71,33 +71,33 @@ void LEDThread(void *args)
         if(evt.status == osEventMail) {
             msg = (MailMsg *)evt.value.p;
 
-            /* check if mail msg size correct */
-
             /* the second byte in the message denotes the action type */
             switch (msg->content[1]) {
-                case LED_PUBLISH_BLINK_FAST:
-                    printf("LEDThread: pushbutton pressed. publishing blink"
-                           " fast command to all nodes\n");
-                    pub_buf[0] = FWD_TO_LED_THR;
-                    pub_buf[1] = LED_BLINK_FAST;    
+                case LED_THR_PUBLISH_MSG:
+                    printf("LEDThread: received command to publish to topic"
+                           "m3pi-mqtt-example/led-thread\n");
+                    pub_buf[0] = 'h';
+                    pub_buf[1] = 'i';
                     message.qos = MQTT::QOS0;
                     message.retained = false;
                     message.dup = false;
                     message.payload = (void*)pub_buf;
-                    message.payloadlen = 2 + 1; //+1 for null char since MQTT payloads are strings
+                    message.payloadlen = 2; //MQTTclient.h takes care of adding null char?
                     /* Lock the global MQTT mutex before publishing */
                     mqttMtx.lock();
                     client->publish(topic, message);
                     mqttMtx.unlock();
                     break;
                 case LED_ON_ONE_SEC:
-                    printf("LEDThread: turning LED2 on for one second...\n");
+                    printf("LEDThread: received message to turn LED2 on for"
+                           "one second...\n");
                     led2 = 1;
                     wait(1);
                     led2 = 0;
                     break;
                 case LED_BLINK_FAST:
-                    printf("LEDThread: blinking LED2 fast for one second...\n");
+                    printf("LEDThread: received message to blink LED2 fast for"
+                           "one second...\n");
                     for(int i = 0; i < 10; i++)
                     {
                         led2 = !led2;

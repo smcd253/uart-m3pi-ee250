@@ -50,20 +50,29 @@
 
 Mail<MailMsg, PRINTTHREAD_MAILBOX_SIZE> PrintThreadMailbox;
 
+/* When you read any .c or .cpp files, you often want to open their 
+   corresponding header file and read them simultaneously. */
 void printThread() 
 {
-    MailMsg *msg;
-    osEvent evt;
+    MailMsg *msg; // see MailMsg.h for this type
+    osEvent evt; 
 
     while(1) {
-
+        /* Get anything from the PrintThread's mailbox. If it's empty, this 
+           call will block. Once something is put inside the mailbox, mbed OS
+           will wake this thread up and resume. This structure is what makes 
+           this thread event-based. In the current structure, the PrintThread 
+           is waiting to receive mail from the MQTT callback messageArrived()
+           defined in main.cpp */
         evt = PrintThreadMailbox.get();
 
+        /* Double check if the event type is a new piece of mail */
         if(evt.status == osEventMail) {
             msg = (MailMsg *)evt.value.p;
 
             /* the second byte in the the content of the message tells us what
-             * action to "dispatch" */
+               action to "dispatch." The message types are defined in 
+               MQTTNetwork.h */
             switch (msg->content[1]) {
                 case PRINT_MSG_TYPE_0:
                     printf("printThread: this is a print of message type 0!\n");
@@ -76,6 +85,9 @@ void printThread()
                     break;
             }
 
+            /* You must always free the message after you're done. Not doing so
+               will eventually fill up your mailbox and freeze your entire 
+               program. */
             PrintThreadMailbox.free(msg);
         }
     } /* while */

@@ -20,7 +20,7 @@ enum {
  * LED thread task types
  */
 enum {
-    LED_PUBLISH_BLINK_FAST,
+    LED_THR_PUBLISH_MSG,
     LED_ON_ONE_SEC,
     LED_BLINK_FAST
 };
