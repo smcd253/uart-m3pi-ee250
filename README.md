@@ -114,10 +114,11 @@ accordingly to your workspace:
 
 To test if the flash worked, you can use our example.
 
-## Compiling this Example in Linux
+## Compiling and Running this Example in Linux
 
 It is possible to import this example into the mbed OS online compiler to
-build. However, we only provide instructions for compiling using mbed-cli. 
+build. However, we only provide instructions for compiling using 
+[mbed-cli](https://github.com/ARMmbed/mbed-cli). 
 First, install the pre-reqs (mbed-cli only currently supports python2 so please
 install pip2 using the get-pip.py script that can be found online 
 `sudo python2 get-pip.py`):
@@ -134,10 +135,11 @@ install pip2 using the get-pip.py script that can be found online
         sudo sh -c 'echo SUBSYSTEM==\"usb\", ATTR{idVendor}==\"0d28\", ATTR{idProduct}==\"0204\", MODE:=\"666\" > /etc/udev/rules.d/mbed.rules' 
         sudo /etc/init.d/udev restart 
 
-The next step is to initialize the mbed project and designate the compiler and
-target. First make sure to clone this repository or fork the repository and 
-clone your fork. You will be building on top of this example, so do whatever you
-need to create your own repository using these files.
+Before compiling, clone this repository or fork the repoisitory and clone your 
+fork. You will be building on top of this example, so do whatever you
+need to create your own repository using these files. The next step is to 
+initialize the directory into an mbed project and designate the compiler and 
+target. 
 
 ```
 cd m3pi-mqtt-ee250/
@@ -148,9 +150,10 @@ mbed target LPC1768
 ```
 
 We have created a script for you that does a clean compile, flashes, and terms
-using `pyterm` which we have also included in this repository. To run these 
-scripts WITHOUT sudo, you will need to add your user to the `dialout` group to
-get access to USB devices.
+using `pyterm` that's also in RIOT-OS which we have also included in this 
+repository for your convenience. To run these scripts WITHOUT sudo, you will 
+need to add your user to the `dialout` group to get access to USB devices. We 
+should not see any use of `sudo` to flash your LPC1768s!
 
     sudo adduser $USER dialout
 
@@ -159,34 +162,77 @@ to the guest OS via your Virtualization tool (e.g. Virtualbox). Before moving
 forward, do the following:
 
 1) Edit the MQTT broker hostname and port macros in main.cpp accordingly
-2) Configure the mbed_app.json file with your wifi SSID and PW
+2) Configure the mbed_app.json file with your wifi SSID and PW. Leave the 
+password blank (i.e. "") if it's an open network. 
+
+If the ESP8266 is not successfully connecting to your WiFi access point, see
+the WiFi AP troubleshooting section below. Carefully read the printouts of the
+connection process to determine if it's really a problem with your AP first!
 
 Then, run the script provided to try to compile, flash, and term. Read through 
-the python script to learn how we do this in case you need to break down the 
-steps during your development process.
+the python script to learn how we do this in case you need to use only a subset
+of the commands during your development process.
 
     python2 flash_and_term.py
 
 On the first flash, you actually have to manually drop a binary into the LPC1768
-before the flashing script fully works. Drag and drop the compiled binary file 
-`m3pi-mqtt-ee250/BUILD/LPC1768/GCC_ARM/m3pi-mqtt-ee250.bin` into the flash drive
-that pops up when you plug in the LPC1768. Now that a binary file is in there,
-you should be able to use the flash_and_term.py script to flash your LPC1768 
-instead of manually dropping the binary file into the LPC1768. Upon every flash,
-you will have to hit the reset button the LPC1768 for it to start the new
-program. Read the printouts to see if the program is able to connect to your
-wifi access point and our MQTT broker. If it's working, you can remotely trigger
-your LPC1768 to print out some print statements via MQTT. In a linux terminal,
-use the `mosquitto_pub` program to test your connection. Below are command line
-examples to publish binary messages. See how your LPC1768 reacts to the byte
-messages. 
+before the flashing script fully works. On the first execution of the python
+script, find the compiled binary file 
+`m3pi-mqtt-ee250/BUILD/LPC1768/GCC_ARM/m3pi-mqtt-ee250.bin` and drag/drop it
+directly into the flash drive that pops up when you plug in the LPC1768. Now 
+that a binary file is in there, you should be able to use the flash_and_term.py 
+script to flash your LPC1768  instead of manually dropping in a binary file.
+Upon every new flash, you will have to press reset button the LPC1768 to start
+the newly flashed program. Read the printouts to see if the program is able to 
+connect to your wifi access point and our MQTT broker. If it's working, you 
+can start testing if everything is working via MQTT. In a linux terminal,
+use the `mosquitto_pub` program to test your connection with the commands below.
+
+First, open a terminal and subscribe to the topic "m3pi-mqtt-ee250/led-thread"
+
+    mosquitto_sub -h eclipse.usc.edu -p 11000 -t "m3pi-mqtt-ee250/led-thread"
+
+Then, open another terminal and type this command to trigger the first case in 
+the PrintThread.
 
     echo -ne "\x00\x00" | mosquitto_pub -h eclipse.usc.edu -p 11000 -t "m3pi-mqtt-ee250" -s
-    echo -ne "\x00\x01" | mosquitto_pub -h eclipse.usc.edu -p 11000 -t "m3pi-mqtt-ee250" -s
-    echo -ne "\x00\x02" | mosquitto_pub -h eclipse.usc.edu -p 11000 -t "m3pi-mqtt-ee250" -s
 
-If you write a python script to message the m3pi in this example, you will have
-to publish binary data (not a string or binary string). The LPC1768 is an 
-embedded device running C++, so there's no magic! Embedded code has to be 
-explicit at the byte level.
+Trigger the second case in PrintThread:
+
+    echo -ne "\x00\x01" | mosquitto_pub -h eclipse.usc.edu -p 11000 -t "m3pi-mqtt-ee250" -s
+
+Trigger the LEDThread to publish to "m3pi-mqtt-ee250/led-thread" (monitor your
+susbcriber terminal):
+
+    echo -ne "\x01\x00" | mosquitto_pub -h eclipse.usc.edu -p 11000 -t "m3pi-mqtt-ee250" -s
+
+Trigger the LEDThread to turn on LED2 for one second:
+
+    echo -ne "\x01\x01" | mosquitto_pub -h eclipse.usc.edu -p 11000 -t "m3pi-mqtt-ee250" -s
+
+Trigger the LEDThread to blink LED2:
+
+    echo -ne "\x01\x02" | mosquitto_pub -h eclipse.usc.edu -p 11000 -t "m3pi-mqtt-ee250" -s
+
+If you write a python script to message the mbed in this example, you will have
+to publish binary data (not a string or binary string). We use raw bytes because
+it's easier to code on the C++ side. The LPC1768 is an embedded device running 
+C++, so there's no magic! 
+
+## Understanding the Code
+
+**You will need to spend time reading the code, otherwise you won't be able to
+modify it to suit your application needs. As usual, start at the main() function
+in main.cpp!**
+
+## WiFi AP Troubleshooting
+
+The ESP8266 has very barebones code that may not be handled well by different
+wierless routers. We've found a lot of problems arise when using password 
+protected access points. Test to see if the ESP8266 can connect to an open 
+network first. If this works, then you may have to change your router's 
+authentication settings. Try all the different WPA authentication types. That 
+is, try WPA with AES, WPA with TKIP, WPA with AES+TKIP, WPA2 with AES, and so 
+on. WiFi Multimedia (WMM) is also known to cause problems with the ESP8266. 
+Turn that setting off in your router.
 
