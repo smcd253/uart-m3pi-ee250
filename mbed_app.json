@@ -16,10 +16,10 @@
             "value": true
         },
         "wifi-ssid": {
-            "value": "\"SENSOID-2.4GHZ\""
+            "value": "\"your-wifi-ssid\""
         },
         "wifi-password": {
-            "value": "\"\""
+            "value": "\"your-wifi-password\""
         }
     },
     "target_overrides": {

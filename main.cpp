@@ -61,8 +61,7 @@ extern "C" void mbed_reset();
 #define WIFI_HW_RESET_PIN       p26
 
 /* Using a hostname instead of IP address has been unverified by us */
-//128.125.124.160
-#define MQTT_BROKER_IPADDR      "128.125.124.160"
+#define MQTT_BROKER_IPADDR      "128.125.124.160"  // eclipse.usc.edu == 128.125.124.160
 #define MQTT_BROKER_PORT        11000
 
 /* turn on easy-connect debug prints */
