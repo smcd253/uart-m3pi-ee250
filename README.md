@@ -225,6 +225,15 @@ C++, so there's no magic!
 modify it to suit your application needs. As usual, start at the main() function
 in main.cpp!**
 
+## Moving the m3pi Robot
+
+We have provided a movement() function for you to use. If you want to use it
+in a different .cpp file (e.g. the different thread files), then you can 
+extern the movement() function in that .cpp file to use it. Read the 
+movement() function comments followed by the example we provided and commented 
+out in the main() function. Uncomment the sequence of movement commands, flash
+the mbed LPC1768, and see how your robot moves!
+
 ## WiFi AP Troubleshooting
 
 The ESP8266 has very barebones code that may not be handled well by different
