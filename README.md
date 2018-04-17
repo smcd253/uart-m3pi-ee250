@@ -80,39 +80,59 @@ ESP8266-01:
 
 We have already updated your ESP8266-01. However, if you are interested, here 
 are the instructions on how to do it. Updating the ESP8266-01 (or simply ESP-01) 
-is a more involved process. First, we have found that
+is a more involved process. First, we have found That
 using an mbed board as a serial passthrough does NOT work very well. It works if
 you use specific esptool versions and slow down the flash block sizes. Please 
 purchase an FTDI board with a 3.3V output to save you the headache. We 
 specifically used
 [this one from Amazon](https://www.amazon.com/KEDSUM-CP2102-Module-Download-Converter/dp/B009T2ZR6W). 
+Below is a Fritzing diagram of our setup for flashing the ESP8266.
+
+![Picture](esp8266_flashing_diagram.png)
 
 Clone the latest version of the 
 [esptool](https://github.com/espressif/esptool) to flash your ESP-01. Also, 
 clone the 
 [ESP8266_NONOS_SDK](https://github.com/espressif/ESP8266_NONOS_SDK) repository 
-to get the binaries we used to flash our ESP-01. The ESP8266 comes in very many 
-flavors, and there are many revisions (and manufacturers?) of the ESP-01. 
-Hopefully, the settings and version we successfully used will also work for you. 
-The binaries we used were from the master branch at the commit 
+to get the AT firmware binaries we used to flash our ESP-01. The ESP8266 comes 
+in very many flavors, and there are many revisions (and manufacturers?) of the 
+ESP-01. We purchased our modules from multiple different vendors on Amazon, and 
+these settings seem to work for all the ESP-01's we've received. Hopefully, the 
+settings and version we successfully used will also work for you. The AT 
+firmware binaries we used were from the master branch at commit 
 [509eae8515793ec62f6501e2783c865f9a8f87e3](https://github.com/espressif/ESP8266_NONOS_SDK/tree/509eae8515793ec62f6501e2783c865f9a8f87e3)
 of the ESP8266_NONOS_SDK repository. Since we have the 1MB flash variant, we 
 used the binary files listed below. To prepare for flashing, consolidate all the 
 following binary files into one folder (TODO, list paths to these files in the
 ESP8266_NONOS_SDK repository):
 
-* boot_v1.6.bin
-* user1.1024.new.2.bin
-* esp_init_data_default.bin
-* blank.bin
+* bin/boot_v1.6.bin
+* bin/at/512+512/user1.1024.new.2.bin
+* bin/esp_init_data_default.bin
+* bin/blank.bin
 
-Then, flash using the following commands. Make sure to change the port value
-accordingly to your workspace:
+Before you can flash, you need to boot into the ESP8266's bootloader. To do this,
+make sure your setup is wired up as shown in the Fritzing diagram above. The
+key connections is the GPIO0 pin needs to be connected to GND upon reset to
+boot into the bootloader. Reset the ESP8266 by moving the "RST" pin to GND and
+then back to 3.3V VCC. Then, flash using the following commands. Make sure to 
+change the port value to the path of your USB to TTL serial adapter:
 
     cd esptool/
-    ./esptool.py --port /dev/ttyUSB0 --baud 115200 write_flash -fm dout -fs 1MB -ff 26m 0x00000 /path/to/binaries/boot_v1.6.bin 0x01000 /path/to/binaries/user1.1024.new.2.bin 0xfc000 /path/to/binaries/esp_init_data_default.bin 0x7e000 /path/to/binaries/blank.bin
+    ./esptool.py --port /dev/ttyUSB0 --baud 115200 write_flash -fm dout -fs 1MB \
+    -ff 26m 0x00000 ~/ESP8266_NONOS_SDK/bin/boot_v1.6.bin \
+    0x01000 ~/ESP8266_NONOS_SDK/bin/at/512+512/user1.1024.new.2.bin \
+    0xfc000 ~/ESP8266_NONOS_SDK/bin/esp_init_data_default.bin \
+    0x7e000 ~/ESP8266_NONOS_SDK/bin/blank.bin
 
-To test if the flash worked, you can use our example.
+To test if the flash worked, you can use a serial terminal program like CuteCom
+with CR,LF line endings and send AT commands. You can refer to Espressif's
+[documentation.](https://www.espressif.com/sites/default/files/documentation/4a-esp8266_at_instruction_set_en.pdf)
+Here is a series of commands that will set the ESP8266 to station mode and scan
+WiFi access points:
+
+    AT+CWMODE_CUR=1
+    AT+CWLAP
 
 ## Compiling and Running this Example in Linux
 
