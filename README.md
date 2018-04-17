@@ -178,8 +178,12 @@ should not see any use of `sudo` to flash your LPC1768s!
     sudo adduser $USER dialout
 
 Restart your linux machine. If you are using a VM, pass the mbed device through
-to the guest OS via your Virtualization tool (e.g. Virtualbox). Before moving
-forward, do the following:
+to the guest OS via your Virtualization tool (e.g. Virtualbox). Next, wire up
+the LPC1768 to the ESP8266 like the Fritzing diagram below:
+
+![Picture](m3pi-mqtt-ee250-diagram.png)
+
+Once you are finished, return to the code and do the following:
 
 1) Edit the MQTT broker hostname and port macros in main.cpp accordingly
 2) Configure the mbed_app.json file with your wifi SSID and PW. Leave the 
@@ -264,4 +268,3 @@ authentication settings. Try all the different WPA authentication types. That
 is, try WPA with AES, WPA with TKIP, WPA with AES+TKIP, WPA2 with AES, and so 
 on. WiFi Multimedia (WMM) is also known to cause problems with the ESP8266. 
 Turn that setting off in your router.
-
