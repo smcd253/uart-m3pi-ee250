@@ -16,13 +16,21 @@ enum {
     FWD_TO_LED_THR   = 1
 }; 
 
+
 /**
  * LED thread task types
  */
 enum {
     LED_THR_PUBLISH_MSG,
     LED_ON_ONE_SEC,
-    LED_BLINK_FAST
+    LED_BLINK_FAST,
+    /**
+    * m3pi movement task types (in LEDThread.cpp)
+    */
+    FORWARD,
+    BACKWARD,
+    RIGHT_90,
+    LEFT_90,
 };
 
 /**

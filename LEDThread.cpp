@@ -49,11 +49,45 @@
 
 #include "MQTTClient.h"
 
+// ----------- m3pi mod ------------
+// #include "m3pi.h"
+
 Mail<MailMsg, LEDTHREAD_MAILBOX_SIZE> LEDMailbox;
 
 static DigitalOut led2(LED2);
 
 static const char *topic = "m3pi-mqtt-ee250/led-thread";
+
+// ----------- m3pi mod ------------
+// m3pi m3pi(p23, p9, p10);
+
+// void movement(char command, char speed, int delta_t)
+// {
+//     if (command == 's')
+//     {
+//         m3pi.forward(speed);
+//         Thread::wait(delta_t);
+//         m3pi.stop();
+//     }    
+//     else if (command == 'a')
+//     {
+//         m3pi.left(speed);
+//         Thread::wait(delta_t);
+//         m3pi.stop();
+//     }   
+//     else if (command == 'w')
+//     {
+//         m3pi.backward(speed);
+//         Thread::wait(delta_t);
+//         m3pi.stop();
+//     }
+//     else if (command == 'd')
+//     {
+//         m3pi.right(speed);
+//         Thread::wait(delta_t);
+//         m3pi.stop();
+//     }
+// }
 
 void LEDThread(void *args) 
 {
@@ -105,6 +139,21 @@ void LEDThread(void *args)
                     }
                     led2 = 0;
                     break;
+
+                // ----------- m3pi mod ------------
+                case FORWARD:
+                    printf("LEDThread: received message to move FORWARD");
+                    // movement('w', 25, 100);
+                case BACKWARD:
+                    printf("LEDThread: received message to move BACKWARD");
+                    // movement('s', 25, 100);
+                case RIGHT_90:
+                    printf("LEDThread: received message to move RIGHT_90");
+                    // movement('d', 25, 100);
+                case LEFT_90:
+                    printf("LEDThread: received message to move LEFT_90");
+                    // movement('a', 25, 100);
+
                 default:
                     printf("LEDThread: invalid message\n");
                     break;
