@@ -9,8 +9,8 @@ def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
 
     #subscribe to topics of interest here
-    client.subscribe("anrg-pi9/defaultCallback")
-    client.subscribe("anrg-pi9/LEDThread")
+    # client.subscribe("anrg-pi9/defaultCallback")
+    client.subscribe("m3pi-mqtt-ee250/led-thread")
 
 
 # #Custom callbacks need to be structured with three args like on_message()
@@ -37,12 +37,12 @@ if __name__ == '__main__':
     left_90 = 0x06;
 
     while True:
-        client.publish("anrg-pi9/LEDThread", forward)
+        client.publish("m3pi-mqtt-ee250/led-thread", forward)
         time.sleep(1)
-        client.publish("anrg-pi9/LEDThread", backward)
+        client.publish("m3pi-mqtt-ee250/led-thread", backward)
         time.sleep(1)
-        client.publish("anrg-pi9/LEDThread", right_90)
+        client.publish("m3pi-mqtt-ee250/led-thread", right_90)
         time.sleep(1)
-        client.publish("anrg-pi9/LEDThread", left_90)
+        client.publish("m3pi-mqtt-ee250/led-thread", left_90)
 
 
