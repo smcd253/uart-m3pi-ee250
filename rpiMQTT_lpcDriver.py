@@ -31,10 +31,10 @@ if __name__ == '__main__':
     client.connect(host="eclipse.usc.edu", port=11000, keepalive=60)
     client.loop_start()
 
-    forward = 0x03;
-    backward = 0x04;
-    right_90 = 0x05;
-    left_90 = 0x06;
+    forward = \x01\0x03;
+    backward = \x01\0x04;
+    right_90 = \x01\0x05;
+    left_90 = \x01\0x06;
 
     while True:
         client.publish("m3pi-mqtt-ee250/led-thread", forward)

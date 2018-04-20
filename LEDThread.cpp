@@ -142,16 +142,16 @@ void LEDThread(void *args)
 
                 // ----------- m3pi mod ------------
                 case FORWARD:
-                    printf("LEDThread: received message to move FORWARD");
+                    printf("LEDThread: received message to move FORWARD\n");
                     // movement('w', 25, 100);
                 case BACKWARD:
-                    printf("LEDThread: received message to move BACKWARD");
+                    printf("LEDThread: received message to move BACKWARD\n");
                     // movement('s', 25, 100);
                 case RIGHT_90:
-                    printf("LEDThread: received message to move RIGHT_90");
+                    printf("LEDThread: received message to move RIGHT_90\n");
                     // movement('d', 25, 100);
                 case LEFT_90:
-                    printf("LEDThread: received message to move LEFT_90");
+                    printf("LEDThread: received message to move LEFT_90\n");
                     // movement('a', 25, 100);
 
                 default:
