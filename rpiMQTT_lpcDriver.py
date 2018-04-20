@@ -10,8 +10,8 @@ def on_connect(client, userdata, flags, rc):
 
     #subscribe to topics of interest here
     # client.subscribe("anrg-pi9/defaultCallback")
-    client.subscribe("m3pi-mqtt-ee250/led-thread")
-    client.message_callback_add("m3pi-mqtt-ee250/led-thread", LEDThread)
+    client.subscribe("m3pi-mqtt-ee250")
+    client.message_callback_add("m3pi-mqtt-ee250", LEDThread)
 
 
 #Custom callbacks need to be structured with three args like on_message()
