@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     forward = bytearray([1, 3])
     backward = bytearray([1, 4])
-    right_90 = bytearra([1, 5])
+    right_90 = bytearray([1, 5])
     left_90 = bytearray([1, 6])
 
     while True:
