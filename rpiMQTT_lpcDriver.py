@@ -35,12 +35,12 @@ if __name__ == '__main__':
     left_90 = '\x01\0x06'
 
     while True:
-        client.publish("m3pi-mqtt-ee250/led-thread", forward)
+        client.publish("m3pi-mqtt-ee250", forward)
         time.sleep(1)
-        client.publish("m3pi-mqtt-ee250/led-thread", backward)
+        client.publish("m3pi-mqtt-ee250", backward)
         time.sleep(1)
-        client.publish("m3pi-mqtt-ee250/led-thread", right_90)
+        client.publish("m3pi-mqtt-ee250", right_90)
         time.sleep(1)
-        client.publish("m3pi-mqtt-ee250/led-thread", left_90)
+        client.publish("m3pi-mqtt-ee250", left_90)
 
 
