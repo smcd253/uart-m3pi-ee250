@@ -28,11 +28,10 @@ if __name__ == '__main__':
     client.connect(host="eclipse.usc.edu", port=11000, keepalive=60)
     client.loop_start()
 
-    elem = [1, 3]
-    forward = bytearray(elem)
+    forward = bytearray([1, 3])
     backward = bytearray([1, 4])
-    right_90 = "\x01\0x05"
-    left_90 = '\x01\0x06'
+    right_90 = bytearra([1, 5])
+    left_90 = bytearray([1, 6])
 
     while True:
         client.publish("m3pi-mqtt-ee250", forward)
