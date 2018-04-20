@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     elem = [1, 3]
     forward = bytearray(elem)
-    backward = bytearray('\x01\0x04').hex()
+    backward = bytearray([1, 4])
     right_90 = '\x01\0x05'
     left_90 = '\x01\0x06'
 
