@@ -13,15 +13,11 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("m3pi-mqtt-ee250/led-thread")
 
 
-# #Custom callbacks need to be structured with three args like on_message()
-# def LEDThread(client, userdata, message):
-#     #the third argument is 'message' here unlike 'msg' in on_message 
-#     data = str(message.payload, "utf-8")
-#     if ((data == "TOGGLE") and digitalRead(LED) == 0): #if receive message and LED is off
-#         digitalWrite(LED, 1) #turn LED on
-#     elif ((data == "TOGGLE") and digitalRead(LED) == 1): #if receive message and LED is on
-#         digitalWrite(LED, 0) #turn LED off
-
+#Custom callbacks need to be structured with three args like on_message()
+def LEDThread(client, userdata, message):
+    #the third argument is 'message' here unlike 'msg' in on_message 
+    data = str(message.payload, "utf-8")
+    print(data)
 
 if __name__ == '__main__':
     #this section is covered in publisher_and_subscriber_example.py
@@ -34,7 +30,7 @@ if __name__ == '__main__':
     elem = [1, 3]
     forward = bytearray(elem)
     backward = bytearray([1, 4])
-    right_90 = '\x01\0x05'
+    right_90 = "\x01\0x05"
     left_90 = '\x01\0x06'
 
     while True:
