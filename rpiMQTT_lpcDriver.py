@@ -5,11 +5,6 @@ Run rpi_pub_and_sub.py on your Raspberry Pi."""
 import paho.mqtt.client as mqtt
 import time
 
-import grovepi
-from grovepi import *
-from grove_rgb_lcd import *
-from grove_dht import Dht
-
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
 
