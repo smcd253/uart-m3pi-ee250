@@ -31,8 +31,8 @@ if __name__ == '__main__':
     client.connect(host="eclipse.usc.edu", port=11000, keepalive=60)
     client.loop_start()
 
-    forward = '\x01\0x03'
-    backward = '\x01\0x04'
+    forward = bytearray('\x01\x03')
+    backward = bytearray('\x01\0x04').hex()
     right_90 = '\x01\0x05'
     left_90 = '\x01\0x06'
 
