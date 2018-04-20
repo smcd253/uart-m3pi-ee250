@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     while True:
         # client.publish("m3pi-mqtt-ee250/led-thread", forward)
-        # time.sleep(1)
+        time.sleep(1)
         # client.publish("m3pi-mqtt-ee250/led-thread", backward)
         # time.sleep(1)
         # client.publish("m3pi-mqtt-ee250/led-thread", right_90)
