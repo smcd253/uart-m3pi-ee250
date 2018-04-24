@@ -121,7 +121,7 @@ if __name__ == '__main__':
         ctrl = int(ctrl.__next__())
         speed_constant = 1
 
-        print("ctrl = " + ctrl)
+        print("ctrl = " + str(ctrl)
         # decide left/right
         if (ctrl < 0): # right
             right.append(ctrl)
