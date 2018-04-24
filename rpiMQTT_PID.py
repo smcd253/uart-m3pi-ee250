@@ -21,6 +21,7 @@ def LEDThread(client, userdata, message):
     data = str(message.payload, "utf-8")
     print(data)
 
+global x = 0
 def on_press(key):
     global x
     try: 
@@ -84,7 +85,6 @@ def pid_controller(y, yc, h, Ti, Td, Kp, u0, e0):
 
 
 if __name__ == '__main__':
-    global x
     #setup the keyboard event listener
     lis = keyboard.Listener(on_press=on_press)
     lis.start() # start to listen on a separate thread
