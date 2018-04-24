@@ -122,7 +122,7 @@ if __name__ == '__main__':
         speed_constant = 1
 
         print("control = " + str(control))
-        decide left/right
+        #decide left/right
         if (control < 0): # right
             right.append(control)
             client.publish("m3pi-mqtt-ee250", right)
