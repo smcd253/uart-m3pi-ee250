@@ -18,8 +18,8 @@ def on_connect(client, userdata, flags, rc):
 #Custom callbacks need to be structured with three args like on_message()
 def LEDThread(client, userdata, message):
     #the third argument is 'message' here unlike 'msg' in on_message 
-    data = str(message.payload, "utf-8")
-    # print(data)
+    data = str(message.payload)
+    print(data)
 
 x = 0
 def on_press(key):
@@ -127,12 +127,10 @@ if __name__ == '__main__':
             right.append(control)
             client.publish("m3pi-mqtt-ee250", right)
             right = bytearray([1, 5])
-            print(str(right))
         elif (control > 0): #left
             left.append(control)
             client.publish("m3pi-mqtt-ee250", left)
             left = bytearray([1, 6])
-            print(str(left))
         else: #centered
             client.publish("m3pi-mqtt-ee250", stop)
         
