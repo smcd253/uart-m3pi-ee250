@@ -118,6 +118,7 @@ if __name__ == '__main__':
         """
         #def pid_controller(y, yc, h=1, Ti=1, Td=1, Kp=1, u0=0, e0=0)
         ctrl = pid_controller(x, 0, 1, 1, 1, 1, 0, 0)
+        ctrl = int(ctrl)
         speed_constant = 1
 
         # decide left/right
