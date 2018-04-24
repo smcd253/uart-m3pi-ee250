@@ -21,7 +21,7 @@ def LEDThread(client, userdata, message):
     data = str(message.payload, "utf-8")
     print(data)
 
-global x
+x = 0
 def on_press(key):
     global x
     try: 
