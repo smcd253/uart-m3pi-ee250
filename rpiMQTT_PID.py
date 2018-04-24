@@ -19,7 +19,7 @@ def on_connect(client, userdata, flags, rc):
 def LEDThread(client, userdata, message):
     #the third argument is 'message' here unlike 'msg' in on_message 
     data = str(message.payload, "utf-8")
-    print(data)
+    # print(data)
 
 x = 0
 def on_press(key):
@@ -121,16 +121,18 @@ if __name__ == '__main__':
         control = int(ctrl.__next__())
         speed_constant = 1
 
-        print("control = " + str(control))
+        # print("control = " + str(control))
         #decide left/right
         if (control < 0): # right
             right.append(control)
             client.publish("m3pi-mqtt-ee250", right)
             right.pop()
+            print(str(right))
         elif (control > 0): #left
             left.append(control)
             client.publish("m3pi-mqtt-ee250", left)
             left.pop
+            print(str(left))
         else: #centered
             client.publish("m3pi-mqtt-ee250", stop)
         
