@@ -29,8 +29,9 @@ enum {
     */
     FORWARD,
     BACKWARD,
-    RIGHT_90,
-    LEFT_90,
+    RIGHT,
+    LEFT,
+    STOP
 };
 
 /**

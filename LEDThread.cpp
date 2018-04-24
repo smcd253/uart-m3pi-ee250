@@ -144,16 +144,55 @@ void LEDThread(void *args)
                 case FORWARD:
                     printf("LEDThread: received message to move FORWARD\n");
                     // movement('w', 25, 100);
+                    break;
                 case BACKWARD:
                     printf("LEDThread: received message to move BACKWARD\n");
                     // movement('s', 25, 100);
-                case RIGHT_90:
-                    printf("LEDThread: received message to move RIGHT_90\n");
+                    break;
+                case RIGHT:
+                    printf("LEDThread: received message to move RIGHT\n");
+                    // grab speed data
+                    if(msg->content[2] != NULL){
+                        speed = int(msg->content[2]);
+                        m3pi.right(speed);
+                        printf("Turn RIGHT with speed %i\n", speed);
+                        if(msg->content[3] != NULL){
+                            delta_t = int(msg->content[4]);
+                            printf("Wait %ims\n");
+                            Thread::wait(delta_t);
+                        }
+                        else{
+                            // wait 100ms
+                            Thread::wait(100);
+                        }
+                        m3pi.stop();    
+                    }
                     // movement('d', 25, 100);
-                case LEFT_90:
-                    printf("LEDThread: received message to move LEFT_90\n");
+                    break;
+                case LEFT:
+                    printf("LEDThread: received message to move LEFT\n");
+                    // grab speed data
+                    if(msg->content[2] != NULL){
+                        speed = int(msg->content[2]);
+                        m3pi.left(speed);
+                        printf("Turn LEFT with speed %i\n", speed);
+                        if(msg->content[3] != NULL){
+                            delta_t = int(msg->content[4]);
+                            printf("Wait %ims\n");
+                            Thread::wait(delta_t);
+                        }
+                        else{
+                            // wait 100ms
+                            Thread::wait(100);
+                        }
+                        m3pi.stop();
+                    }
                     // movement('a', 25, 100);
-
+                    break;
+                case STOP:
+                    printf("LEDThread: received message to STOP\n");
+                    m3pi.stop();
+                    break;
                 default:
                     printf("LEDThread: invalid message\n");
                     break;
