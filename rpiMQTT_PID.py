@@ -123,12 +123,10 @@ if __name__ == '__main__':
 
         print("control = " + str(control)
         # decide left/right
-        # right
-        if (control < 0):
+        if control < 0: # right
             right.append(control)
             client.publish("m3pi-mqtt-ee250", right)
-        #left
-        elif (control > 0): 
+        elif control > 0: #left
             left.append(control)
             client.publish("m3pi-mqtt-ee250", left)
         else: #centered
