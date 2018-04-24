@@ -37,7 +37,7 @@ def on_press(key):
 
 # simple PID control based on deviation from middle based on 'x'
 
-def pid_controller(y, yc, h, Ti, Td, Kp, u0, e0)
+def pid_controller(y, yc, h, Ti, Td, Kp, u0, e0):
 	"""Calculate System Input using a PID Controller
 
 	Arguments:
