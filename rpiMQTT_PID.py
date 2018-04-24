@@ -118,17 +118,19 @@ if __name__ == '__main__':
         """
         #def pid_controller(y, yc, h=1, Ti=1, Td=1, Kp=1, u0=0, e0=0)
         ctrl = pid_controller(x, 0, 1, 1, 1, 1, 0, 0)
-        control = int(ctrl.__next__())
-        speed_constant = 1
+        control = int(ctrl.__next__()) #grab last element of pid_controller() generator
+        corr = 1 # correction constant
 
-        # print("control = " + str(control))
-        #decide left/right
-        if (control < 0): # right
-            right.append(control)
+        # decide left/right
+        # if control < 0 --> m3pi is drifting right of line, 
+        # use control variable to increase speed of left motor
+        if (control > 0): # right
+            control = control * (-1) # cannot pass negative values into bytearray
+            right.append(corr * control)
             client.publish("m3pi-mqtt-ee250", right)
             right = bytearray([1, 5])
-        elif (control > 0): #left
-            left.append(control)
+        elif (control < 0): #left
+            left.append(corr * control)
             client.publish("m3pi-mqtt-ee250", left)
             left = bytearray([1, 6])
         else: #centered
