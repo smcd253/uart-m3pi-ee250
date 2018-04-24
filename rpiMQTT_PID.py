@@ -126,8 +126,11 @@ if __name__ == '__main__':
         if (control < 0): # right
             right.append(control)
             client.publish("m3pi-mqtt-ee250", right)
+            right.pop()
         elif (control > 0): #left
             left.append(control)
             client.publish("m3pi-mqtt-ee250", left)
+            left.pop
         else: #centered
             client.publish("m3pi-mqtt-ee250", stop)
+        
