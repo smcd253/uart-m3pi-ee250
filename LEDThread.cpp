@@ -50,7 +50,7 @@
 #include "MQTTClient.h"
 
 // ----------- m3pi mod ------------
-// #include "m3pi.h"
+#include "m3pi.h"
 
 Mail<MailMsg, LEDTHREAD_MAILBOX_SIZE> LEDMailbox;
 
@@ -159,7 +159,7 @@ void LEDThread(void *args)
                         printf("Turn RIGHT with speed %i\n", speed);
                         if(msg->content[3] != NULL){
                             delta_t = int(msg->content[4]);
-                            printf("Wait %ims\n");
+                            printf("Wait %ims\n", delta_t);
                             Thread::wait(delta_t);
                         }
                         else{
@@ -179,7 +179,7 @@ void LEDThread(void *args)
                         printf("Turn LEFT with speed %i\n", speed);
                         if(msg->content[3] != NULL){
                             delta_t = int(msg->content[4]);
-                            printf("Wait %ims\n");
+                            printf("Wait %ims\n", delta_t);
                             Thread::wait(delta_t);
                         }
                         else{
