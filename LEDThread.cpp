@@ -104,7 +104,8 @@ void LEDThread(void *args)
 
         if(evt.status == osEventMail) {
             msg = (MailMsg *)evt.value.p;
-
+            int speed = 0; // speed
+            int delta_t = 0; // time
             /* the second byte in the message denotes the action type */
             switch (msg->content[1]) {
                 case LED_THR_PUBLISH_MSG:
