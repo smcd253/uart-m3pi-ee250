@@ -131,5 +131,3 @@ if __name__ == '__main__':
         #     client.publish("m3pi-mqtt-ee250", left)
         # else: #centered
         #     client.publish("m3pi-mqtt-ee250", stop)
-
-
