@@ -59,35 +59,35 @@ static DigitalOut led2(LED2);
 static const char *topic = "m3pi-mqtt-ee250/led-thread";
 
 // ----------- m3pi mod ------------
-// m3pi m3pi(p23, p9, p10);
+m3pi m3pi(p23, p9, p10);
 
-// void movement(char command, char speed, int delta_t)
-// {
-//     if (command == 's')
-//     {
-//         m3pi.forward(speed);
-//         Thread::wait(delta_t);
-//         m3pi.stop();
-//     }    
-//     else if (command == 'a')
-//     {
-//         m3pi.left(speed);
-//         Thread::wait(delta_t);
-//         m3pi.stop();
-//     }   
-//     else if (command == 'w')
-//     {
-//         m3pi.backward(speed);
-//         Thread::wait(delta_t);
-//         m3pi.stop();
-//     }
-//     else if (command == 'd')
-//     {
-//         m3pi.right(speed);
-//         Thread::wait(delta_t);
-//         m3pi.stop();
-//     }
-// }
+void movement(char command, char speed, int delta_t)
+{
+    if (command == 's')
+    {
+        m3pi.forward(speed);
+        Thread::wait(delta_t);
+        m3pi.stop();
+    }    
+    else if (command == 'a')
+    {
+        m3pi.left(speed);
+        Thread::wait(delta_t);
+        m3pi.stop();
+    }   
+    else if (command == 'w')
+    {
+        m3pi.backward(speed);
+        Thread::wait(delta_t);
+        m3pi.stop();
+    }
+    else if (command == 'd')
+    {
+        m3pi.right(speed);
+        Thread::wait(delta_t);
+        m3pi.stop();
+    }
+}
 
 void LEDThread(void *args) 
 {

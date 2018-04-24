@@ -75,7 +75,7 @@ DigitalOut wifiHwResetPin(WIFI_HW_RESET_PIN);
  *  If you send the right sequence of UART characters to the atmega328p, it will
  *  move the robot for you. We provide a movement() function below for you to use
  */
-m3pi m3pi(p23, p9, p10);
+// m3pi m3pi(p23, p9, p10);
 
 /* MQTTClient and TCPSocket (underneath MQTTNetwork) may not be thread safe. 
  * Lock this global mutex before any calls to publish(). 
@@ -100,33 +100,33 @@ static char *topic = "m3pi-mqtt-ee250";
  *
  * @return     { void }
  */
-void movement(char command, char speed, int delta_t)
-{
-    if (command == 's')
-    {
-        m3pi.forward(speed);
-        Thread::wait(delta_t);
-        m3pi.stop();
-    }    
-    else if (command == 'a')
-    {
-        m3pi.left(speed);
-        Thread::wait(delta_t);
-        m3pi.stop();
-    }   
-    else if (command == 'w')
-    {
-        m3pi.backward(speed);
-        Thread::wait(delta_t);
-        m3pi.stop();
-    }
-    else if (command == 'd')
-    {
-        m3pi.right(speed);
-        Thread::wait(delta_t);
-        m3pi.stop();
-    }
-}
+// void movement(char command, char speed, int delta_t)
+// {
+//     if (command == 's')
+//     {
+//         m3pi.forward(speed);
+//         Thread::wait(delta_t);
+//         m3pi.stop();
+//     }    
+//     else if (command == 'a')
+//     {
+//         m3pi.left(speed);
+//         Thread::wait(delta_t);
+//         m3pi.stop();
+//     }   
+//     else if (command == 'w')
+//     {
+//         m3pi.backward(speed);
+//         Thread::wait(delta_t);
+//         m3pi.stop();
+//     }
+//     else if (command == 'd')
+//     {
+//         m3pi.right(speed);
+//         Thread::wait(delta_t);
+//         m3pi.stop();
+//     }
+// }
 
 /* Callback for any received MQTT messages */
 void messageArrived(MQTT::MessageData& md)
@@ -187,22 +187,22 @@ int main()
        at a speed of 25 (speed can be between -127 to 127) for 100 ms. Use
        functions like this in your program to move your m3pi when you get 
        MQTT messages! */
-    movement('w', 25, 100);
-    movement('w', 25, 100);
-    movement('w', 25, 100);
-    movement('w', 25, 100);
-    movement('a', 25, 100);
-    movement('a', 25, 100);
-    movement('a', 25, 100);
-    movement('a', 25, 100);
-    movement('d', 25, 100);
-    movement('d', 25, 100);
-    movement('d', 25, 100);
-    movement('d', 25, 100);
-    movement('s', 25, 100);
-    movement('s', 25, 100);
-    movement('s', 25, 100);
-    movement('s', 25, 100);
+    // movement('w', 25, 100);
+    // movement('w', 25, 100);
+    // movement('w', 25, 100);
+    // movement('w', 25, 100);
+    // movement('a', 25, 100);
+    // movement('a', 25, 100);
+    // movement('a', 25, 100);
+    // movement('a', 25, 100);
+    // movement('d', 25, 100);
+    // movement('d', 25, 100);
+    // movement('d', 25, 100);
+    // movement('d', 25, 100);
+    // movement('s', 25, 100);
+    // movement('s', 25, 100);
+    // movement('s', 25, 100);
+    // movement('s', 25, 100);
 
     wait(1); //delay startup 
     printf("Resetting ESP8266 Hardware...\n");
