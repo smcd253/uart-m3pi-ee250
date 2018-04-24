@@ -121,13 +121,13 @@ if __name__ == '__main__':
         control = int(ctrl.__next__())
         speed_constant = 1
 
-        print("control = " + str(control)
-        # decide left/right
-        # if (control < 0): # right
-        #     right.append(control)
-        #     client.publish("m3pi-mqtt-ee250", right)
-        # elif (control > 0): #left
-        #     left.append(control)
-        #     client.publish("m3pi-mqtt-ee250", left)
-        # else: #centered
-        #     client.publish("m3pi-mqtt-ee250", stop)
+        print("control = " + str(control))
+        decide left/right
+        if (control < 0): # right
+            right.append(control)
+            client.publish("m3pi-mqtt-ee250", right)
+        elif (control > 0): #left
+            left.append(control)
+            client.publish("m3pi-mqtt-ee250", left)
+        else: #centered
+            client.publish("m3pi-mqtt-ee250", stop)
