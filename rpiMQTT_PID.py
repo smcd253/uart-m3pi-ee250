@@ -3,6 +3,7 @@
 Run rpi_pub_and_sub.py on your Raspberry Pi."""
 
 import paho.mqtt.client as mqtt
+from pynput import keyboard
 import time
 
 def on_connect(client, userdata, flags, rc):
