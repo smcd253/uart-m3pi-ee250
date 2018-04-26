@@ -140,3 +140,5 @@ if __name__ == '__main__':
             print(stop)
             client.publish("m3pi-mqtt-ee250", stop)
         
+        #delay to match pid_controller freq
+        time.sleep(h)
