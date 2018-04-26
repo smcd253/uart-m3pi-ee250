@@ -16,10 +16,10 @@
             "value": true
         },
         "wifi-ssid": {
-            "value": "\"holy_LAN\""
+            "value": "\"ee-250-2.4ghz\""
         },
         "wifi-password": {
-            "value": "\"schlongdong\""
+            "value": "\"ee250@vhe205\""
         }
     },
     "target_overrides": {

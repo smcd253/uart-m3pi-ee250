@@ -159,7 +159,7 @@ void LEDThread(void *args)
                         printf("Turn RIGHT with speed %i\n", speed);
                         if(msg->content[3] != NULL){
                             delta_t = int(msg->content[4]);
-                            printf("Wait %ims\n", delta_t);
+                             printf("Wait %ims\n", delta_t);
                             Thread::wait(delta_t);
                         }
                         else{
