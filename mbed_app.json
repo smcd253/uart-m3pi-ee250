@@ -16,10 +16,10 @@
             "value": true
         },
         "wifi-ssid": {
-            "value": "\"ee-250-2.4ghz\""
+            "value": "\"this_LAN_is_our_LAN\""
         },
         "wifi-password": {
-            "value": "\"ee250@vhe205\""
+            "value": "\"weedistight\""
         }
     },
     "target_overrides": {
