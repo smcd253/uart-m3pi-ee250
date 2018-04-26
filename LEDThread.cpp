@@ -165,8 +165,7 @@ void LEDThread(void *args)
                         else{
                             // wait 100ms
                             Thread::wait(100);
-                        }
-                        m3pi.stop();    
+                        }   
                     }
                     // movement('d', 25, 100);
                     break;
@@ -186,7 +185,6 @@ void LEDThread(void *args)
                             // wait 100ms
                             Thread::wait(100);
                         }
-                        m3pi.stop();
                     }
                     // movement('a', 25, 100);
                     break;
@@ -197,6 +195,7 @@ void LEDThread(void *args)
                 default:
                     printf("LEDThread: invalid message\n");
                     break;
+                m3pi.stop(); 
             }            
 
             LEDMailbox.free(msg);

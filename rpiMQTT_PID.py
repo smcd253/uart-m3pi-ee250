@@ -102,6 +102,7 @@ if __name__ == '__main__':
     left = bytearray([1, 6])
     stop = bytearray([1, 7])
 
+    h = 1 # PID execution frequency
     while True:
         # grab result from pid_controller
         """Calculate System Input using a PID Controller
@@ -117,7 +118,7 @@ if __name__ == '__main__':
         Make sure this function gets called every h seconds!
         """
         #def pid_controller(y, yc, h=1, Ti=1, Td=1, Kp=1, u0=0, e0=0)
-        ctrl = pid_controller(x, 0, 1, 1, 1, 1, 0, 0)
+        ctrl = pid_controller(x, 0, h, 1, 1, 1, 0, 0)
         control = int(ctrl.__next__()) #grab last element of pid_controller() generator
         corr = 1 # correction constant
 
