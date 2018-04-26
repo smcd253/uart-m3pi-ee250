@@ -126,12 +126,12 @@ if __name__ == '__main__':
         # if control < 0 --> m3pi is drifting right of line, 
         # use control variable to increase speed of left motor
         if (control > 0): # right
-            control = control * (-1) # cannot pass negative values into bytearray
             right.append(corr * control)
             print(right)
             client.publish("m3pi-mqtt-ee250", right)
             right = bytearray([1, 5])
         elif (control < 0): #left
+            control = control * (-1) # cannot pass negative values into bytearray            
             left.append(corr * control)
             print(left)
             client.publish("m3pi-mqtt-ee250", left)
