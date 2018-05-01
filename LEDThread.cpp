@@ -96,7 +96,7 @@ void LEDThread(void *args)
     MQTT::Message message;
     osEvent evt;
     char pub_buf[16];
-
+    movement('w', 25, 100); // test forward
 
     while(1) {
 
