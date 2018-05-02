@@ -12,7 +12,15 @@ def on_connect(client, userdata, flags, rc):
     # client.subscribe("anrg-pi9/defaultCallback")
     client.subscribe("m3pi-mqtt-ee250")
     client.message_callback_add("m3pi-mqtt-ee250", LEDThread)
+    client.subscribe("anrg-pi2/intersection")
+    client.message_callback_add("anrg-pi2/intersection", intersection_callback)
 
+def intersection_callback(client, userdata, message):
+    data = str(message.payload, "utf-8")
+    if data == "right":
+        client.publish("m3pi-mqtt-ee250", right_90)
+    elif data == "left":
+        client.publish("m3pi-mqtt-ee250", left_90)
 
 #Custom callbacks need to be structured with three args like on_message()
 def LEDThread(client, userdata, message):
