@@ -19,7 +19,7 @@ def on_connect(client, userdata, flags, rc):
 def LEDThread(client, userdata, message):
     #the third argument is 'message' here unlike 'msg' in on_message 
     data = str(message.payload)
-    if (data[0] == 'z']):
+    if data[0] is 'z':
         print(data)
 
 x = 0
