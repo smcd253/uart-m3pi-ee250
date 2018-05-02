@@ -18,7 +18,7 @@ def on_connect(client, userdata, flags, rc):
 #Custom callbacks need to be structured with three args like on_message()
 def LEDThread(client, userdata, message):
     #the third argument is 'message' here unlike 'msg' in on_message 
-    data = str(message.payload)
+    data = str(message.payload, 'utf-8')
     if data[0] is 'z':
         print(data)
 
