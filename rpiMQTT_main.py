@@ -1,7 +1,7 @@
-from multiprocessing import Process, Queue, Pool
 import video_stream
 import rpiMQTT_p2ux
 import paho.mqtt.client as mqtt
+
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
 

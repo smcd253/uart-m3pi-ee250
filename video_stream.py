@@ -7,8 +7,8 @@ import cv2
 import time
 import picamera
 import picamera.array
-import cv2
 import rpiMQTT_PID
+
 def main_meth(client):
 	# initialize the camera and grab a reference to the raw camera capture
 	camera = PiCamera()
