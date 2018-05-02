@@ -171,7 +171,7 @@ void LEDThread(void *args)
                         printf("Turn RIGHT with speed %i\n", speed);
                         if(msg->content[3] != NULL){
                             delta_t = int(msg->content[4]);
-                             printf("Wait %ims\n", delta_t);
+                            printf("Wait %ims\n", delta_t);
                             Thread::wait(delta_t);
                         }
                         else{
@@ -179,19 +179,6 @@ void LEDThread(void *args)
                             Thread::wait(100);
                         }   
                     }
-                    // publish speed and time turning for rpi to calculate distance traveled
-                    pub_buf[0] = 'z'; // flag to avoid reading garbage
-                    pub_buf[1] = (char)speed;
-                    pub_buf[2] = (char)delta_t;
-                    message.qos = MQTT::QOS0;
-                    message.retained = false;
-                    message.dup = false;
-                    message.payload = (void*)pub_buf;
-                    message.payloadlen = 3;
-                    mqttMtx.lock();
-                    client->publish(topic, message);
-                    mqttMtx.unlock();
-                    LEDMailbox.free(msg);
                     break;
                 case LEFT_STILL:
                     printf("LEDThread: received message to turn LEFT\n");
@@ -223,7 +210,7 @@ void LEDThread(void *args)
                     break;
                 m3pi.stop(); 
             }     
-            
+            LEDMailbox.free(msg);    
         }
     } /* while */
 
