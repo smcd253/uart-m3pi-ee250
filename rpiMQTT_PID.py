@@ -19,7 +19,8 @@ def on_connect(client, userdata, flags, rc):
 def LEDThread(client, userdata, message):
     #the third argument is 'message' here unlike 'msg' in on_message 
     data = str(message.payload)
-    # print(data)
+    if (data[0] == 'z']):
+        print(data)
 
 x = 0
 def on_press(key):

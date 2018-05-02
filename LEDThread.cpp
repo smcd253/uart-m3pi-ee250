@@ -96,8 +96,6 @@ void LEDThread(void *args)
     MQTT::Message message;
     osEvent evt;
     char pub_buf[16];
-    printf("ready to execute movement function\n");
-    movement('w', 25, 100); // test forward
 
     while(1) {
 
@@ -118,8 +116,7 @@ void LEDThread(void *args)
                     message.retained = false;
                     message.dup = false;
                     message.payload = (void*)pub_buf;
-                    message.payloadlen = 2; //MQTTclient.h takes care of adding null char?
-                    /* Lock the global MQTT mutex before publishing */
+                    message.payloadlen = 2;
                     mqttMtx.lock();
                     client->publish(topic, message);
                     mqttMtx.unlock();
@@ -145,14 +142,28 @@ void LEDThread(void *args)
                 // ----------- m3pi mod ------------
                 case FORWARD:
                     printf("LEDThread: received message to move FORWARD\n");
-                    // movement('w', 25, 100);
+                    // grab speed data
+                    if(msg->content[2] != NULL){
+                        speed = int(msg->content[2]);
+                        m3pi.forward(speed);
+                        printf("FORWARD with speed %i\n", speed);
+                        if(msg->content[3] != NULL){
+                            delta_t = int(msg->content[4]);
+                            printf("Wait %ims\n", delta_t);
+                            Thread::wait(delta_t);
+                        }
+                        else{
+                            // wait 100ms
+                            Thread::wait(100);
+                        }
+                    }
                     break;
                 case BACKWARD:
                     printf("LEDThread: received message to move BACKWARD\n");
                     // movement('s', 25, 100);
                     break;
-                case RIGHT:
-                    printf("LEDThread: received message to move RIGHT\n");
+                case RIGHT_STILL:
+                    printf("LEDThread: received message to turn RIGHT\n");
                     // grab speed data
                     if(msg->content[2] != NULL){
                         speed = int(msg->content[2]);
@@ -168,10 +179,22 @@ void LEDThread(void *args)
                             Thread::wait(100);
                         }   
                     }
-                    // movement('d', 25, 100);
+                    // publish speed and time turning for rpi to calculate distance traveled
+                    pub_buf[0] = 'z'; // flag to avoid reading garbage
+                    pub_buf[1] = (char)speed;
+                    pub_buf[2] = (char)delta_t;
+                    message.qos = MQTT::QOS0;
+                    message.retained = false;
+                    message.dup = false;
+                    message.payload = (void*)pub_buf;
+                    message.payloadlen = 3;
+                    mqttMtx.lock();
+                    client->publish(topic, message);
+                    mqttMtx.unlock();
+                    LEDMailbox.free(msg);
                     break;
-                case LEFT:
-                    printf("LEDThread: received message to move LEFT\n");
+                case LEFT_STILL:
+                    printf("LEDThread: received message to turn LEFT\n");
                     // grab speed data
                     if(msg->content[2] != NULL){
                         speed = int(msg->content[2]);
@@ -189,6 +212,8 @@ void LEDThread(void *args)
                     }
                     // movement('a', 25, 100);
                     break;
+                case DRIVE:
+                    break;
                 case STOP:
                     printf("LEDThread: received message to STOP\n");
                     m3pi.stop();
@@ -197,9 +222,8 @@ void LEDThread(void *args)
                     printf("LEDThread: invalid message\n");
                     break;
                 m3pi.stop(); 
-            }            
-
-            LEDMailbox.free(msg);
+            }     
+            
         }
     } /* while */
 
