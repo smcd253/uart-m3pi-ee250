@@ -209,9 +209,9 @@ void LEDThread(void *args)
                     printf("LEDThread: invalid message\n");
                     break;
                 m3pi.stop(); 
-            }     
-            LEDMailbox.free(msg);    
+            }         
         }
+        LEDMailbox.free(msg);
     } /* while */
 
     /* this should never be reached */
