@@ -31,7 +31,6 @@ enum {
     BACKWARD,
     RIGHT_STILL,
     LEFT_STILL,
-    DRIVE,
     STOP
 };
 

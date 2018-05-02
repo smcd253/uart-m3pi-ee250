@@ -199,8 +199,6 @@ void LEDThread(void *args)
                     }
                     // movement('a', 25, 100);
                     break;
-                case DRIVE:
-                    break;
                 case STOP:
                     printf("LEDThread: received message to STOP\n");
                     m3pi.stop();
@@ -209,9 +207,9 @@ void LEDThread(void *args)
                     printf("LEDThread: invalid message\n");
                     break;
                 m3pi.stop(); 
-            }         
+            }     
+            LEDMailbox.free(msg);    
         }
-        LEDMailbox.free(msg);
     } /* while */
 
     /* this should never be reached */
