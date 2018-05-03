@@ -107,11 +107,12 @@ void movement(char command, char speed, int delta_t)
 
 
 //uart
+Serial rpi(p13, p14);  // tx, rx
+
 void callback() {
     // Note: you need to actually read from the serial to clear the RX interrupt
-    printf("%c\n", pc.getc());
+    printf("%c\n", rpi.getc());
 }
-Serial rpi(p13, p14);  // tx, rx
 
 int main()
 {
