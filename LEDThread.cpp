@@ -50,7 +50,7 @@
 #include "MQTTClient.h"
 
 // ----------- m3pi mod ------------
-#include "m3pi.h"
+// #include "m3pi.h"
 
 Mail<MailMsg, LEDTHREAD_MAILBOX_SIZE> LEDMailbox;
 
@@ -59,35 +59,35 @@ static DigitalOut led2(LED2);
 static const char *topic = "m3pi-mqtt-ee250/led-thread";
 
 // ----------- m3pi mod ------------
-m3pi m3pi(p23, p9, p10);
+// m3pi m3pi(p23, p9, p10);
 
-void movement(char command, char speed, int delta_t)
-{
-    if (command == 's')
-    {
-        m3pi.forward(speed);
-        Thread::wait(delta_t);
-        m3pi.stop();
-    }    
-    else if (command == 'a')
-    {
-        m3pi.left(speed);
-        Thread::wait(delta_t);
-        m3pi.stop();
-    }   
-    else if (command == 'w')
-    {
-        m3pi.backward(speed);
-        Thread::wait(delta_t);
-        m3pi.stop();
-    }
-    else if (command == 'd')
-    {
-        m3pi.right(speed);
-        Thread::wait(delta_t);
-        m3pi.stop();
-    }
-}
+// void movement(char command, char speed, int delta_t)
+// {
+//     if (command == 's')
+//     {
+//         m3pi.forward(speed);
+//         Thread::wait(delta_t);
+//         m3pi.stop();
+//     }    
+//     else if (command == 'a')
+//     {
+//         m3pi.left(speed);
+//         Thread::wait(delta_t);
+//         m3pi.stop();
+//     }   
+//     else if (command == 'w')
+//     {
+//         m3pi.backward(speed);
+//         Thread::wait(delta_t);
+//         m3pi.stop();
+//     }
+//     else if (command == 'd')
+//     {
+//         m3pi.right(speed);
+//         Thread::wait(delta_t);
+//         m3pi.stop();
+//     }
+// }
 
 void LEDThread(void *args) 
 {
@@ -101,115 +101,115 @@ void LEDThread(void *args)
 
         evt = LEDMailbox.get();
 
-        if(evt.status == osEventMail) {
-            msg = (MailMsg *)evt.value.p;
-            int speed = 0; // speed
-            int delta_t = 0; // time
-            /* the second byte in the message denotes the action type */
-            switch (msg->content[1]) {
-                case LED_THR_PUBLISH_MSG:
-                    printf("LEDThread: received command to publish to topic"
-                           "m3pi-mqtt-example/led-thread\n");
-                    pub_buf[0] = 'h';
-                    pub_buf[1] = 'i';
-                    message.qos = MQTT::QOS0;
-                    message.retained = false;
-                    message.dup = false;
-                    message.payload = (void*)pub_buf;
-                    message.payloadlen = 2;
-                    mqttMtx.lock();
-                    client->publish(topic, message);
-                    mqttMtx.unlock();
-                    break;
-                case LED_ON_ONE_SEC:
-                    printf("LEDThread: received message to turn LED2 on for"
-                           "one second...\n");
-                    led2 = 1;
-                    wait(1);
-                    led2 = 0;
-                    break;
-                case LED_BLINK_FAST:
-                    printf("LEDThread: received message to blink LED2 fast for"
-                           "one second...\n");
-                    for(int i = 0; i < 10; i++)
-                    {
-                        led2 = !led2;
-                        wait(0.1);
-                    }
-                    led2 = 0;
-                    break;
+        // if(evt.status == osEventMail) {
+        //     msg = (MailMsg *)evt.value.p;
+        //     int speed = 0; // speed
+        //     int delta_t = 0; // time
+        //     /* the second byte in the message denotes the action type */
+        //     switch (msg->content[1]) {
+        //         case LED_THR_PUBLISH_MSG:
+        //             printf("LEDThread: received command to publish to topic"
+        //                    "m3pi-mqtt-example/led-thread\n");
+        //             pub_buf[0] = 'h';
+        //             pub_buf[1] = 'i';
+        //             message.qos = MQTT::QOS0;
+        //             message.retained = false;
+        //             message.dup = false;
+        //             message.payload = (void*)pub_buf;
+        //             message.payloadlen = 2;
+        //             mqttMtx.lock();
+        //             client->publish(topic, message);
+        //             mqttMtx.unlock();
+        //             break;
+        //         case LED_ON_ONE_SEC:
+        //             printf("LEDThread: received message to turn LED2 on for"
+        //                    "one second...\n");
+        //             led2 = 1;
+        //             wait(1);
+        //             led2 = 0;
+        //             break;
+        //         case LED_BLINK_FAST:
+        //             printf("LEDThread: received message to blink LED2 fast for"
+        //                    "one second...\n");
+        //             for(int i = 0; i < 10; i++)
+        //             {
+        //                 led2 = !led2;
+        //                 wait(0.1);
+        //             }
+        //             led2 = 0;
+        //             break;
 
-                // ----------- m3pi mod ------------
-                case FORWARD:
-                    printf("LEDThread: received message to move FORWARD\n");
-                    // grab speed data
-                    if(msg->content[2] != NULL){
-                        speed = int(msg->content[2]);
-                        m3pi.forward(speed);
-                        printf("FORWARD with speed %i\n", speed);
-                        if(msg->content[3] != NULL){
-                            delta_t = int(msg->content[4]);
-                            printf("Wait %ims\n", delta_t);
-                            Thread::wait(delta_t);
-                        }
-                        else{
-                            // wait 100ms
-                            Thread::wait(100);
-                        }
-                    }
-                    break;
-                case BACKWARD:
-                    printf("LEDThread: received message to move BACKWARD\n");
-                    // movement('s', 25, 100);
-                    break;
-                case RIGHT_STILL:
-                    printf("LEDThread: received message to turn RIGHT\n");
-                    // grab speed data
-                    if(msg->content[2] != NULL){
-                        speed = int(msg->content[2]);
-                        m3pi.right(speed);
-                        printf("Turn RIGHT with speed %i\n", speed);
-                        if(msg->content[3] != NULL){
-                            delta_t = int(msg->content[4]);
-                            printf("Wait %ims\n", delta_t);
-                            Thread::wait(delta_t);
-                        }
-                        else{
-                            // wait 100ms
-                            Thread::wait(100);
-                        }   
-                    }
-                    break;
-                case LEFT_STILL:
-                    printf("LEDThread: received message to turn LEFT\n");
-                    // grab speed data
-                    if(msg->content[2] != NULL){
-                        speed = int(msg->content[2]);
-                        m3pi.left(speed);
-                        printf("Turn LEFT with speed %i\n", speed);
-                        if(msg->content[3] != NULL){
-                            delta_t = int(msg->content[4]);
-                            printf("Wait %ims\n", delta_t);
-                            Thread::wait(delta_t);
-                        }
-                        else{
-                            // wait 100ms
-                            Thread::wait(100);
-                        }
-                    }
-                    // movement('a', 25, 100);
-                    break;
-                case STOP:
-                    printf("LEDThread: received message to STOP\n");
-                    m3pi.stop();
-                    break;
-                default:
-                    printf("LEDThread: invalid message\n");
-                    break;
-                m3pi.stop(); 
-            }     
-            LEDMailbox.free(msg);    
-        }
+        //         // ----------- m3pi mod ------------
+        //         case FORWARD:
+        //             printf("LEDThread: received message to move FORWARD\n");
+        //             // grab speed data
+        //             if(msg->content[2] != NULL){
+        //                 speed = int(msg->content[2]);
+        //                 m3pi.forward(speed);
+        //                 printf("FORWARD with speed %i\n", speed);
+        //                 if(msg->content[3] != NULL){
+        //                     delta_t = int(msg->content[4]);
+        //                     printf("Wait %ims\n", delta_t);
+        //                     Thread::wait(delta_t);
+        //                 }
+        //                 else{
+        //                     // wait 100ms
+        //                     Thread::wait(100);
+        //                 }
+        //             }
+        //             break;
+        //         case BACKWARD:
+        //             printf("LEDThread: received message to move BACKWARD\n");
+        //             // movement('s', 25, 100);
+        //             break;
+        //         case RIGHT_STILL:
+        //             printf("LEDThread: received message to turn RIGHT\n");
+        //             // grab speed data
+        //             if(msg->content[2] != NULL){
+        //                 speed = int(msg->content[2]);
+        //                 m3pi.right(speed);
+        //                 printf("Turn RIGHT with speed %i\n", speed);
+        //                 if(msg->content[3] != NULL){
+        //                     delta_t = int(msg->content[4]);
+        //                     printf("Wait %ims\n", delta_t);
+        //                     Thread::wait(delta_t);
+        //                 }
+        //                 else{
+        //                     // wait 100ms
+        //                     Thread::wait(100);
+        //                 }   
+        //             }
+        //             break;
+        //         case LEFT_STILL:
+        //             printf("LEDThread: received message to turn LEFT\n");
+        //             // grab speed data
+        //             if(msg->content[2] != NULL){
+        //                 speed = int(msg->content[2]);
+        //                 m3pi.left(speed);
+        //                 printf("Turn LEFT with speed %i\n", speed);
+        //                 if(msg->content[3] != NULL){
+        //                     delta_t = int(msg->content[4]);
+        //                     printf("Wait %ims\n", delta_t);
+        //                     Thread::wait(delta_t);
+        //                 }
+        //                 else{
+        //                     // wait 100ms
+        //                     Thread::wait(100);
+        //                 }
+        //             }
+        //             // movement('a', 25, 100);
+        //             break;
+        //         case STOP:
+        //             printf("LEDThread: received message to STOP\n");
+        //             m3pi.stop();
+        //             break;
+        //         default:
+        //             printf("LEDThread: invalid message\n");
+        //             break;
+        //         m3pi.stop(); 
+        //     }     
+        //     LEDMailbox.free(msg);    
+        // }
     } /* while */
 
     /* this should never be reached */
