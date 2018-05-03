@@ -16,10 +16,10 @@
             "value": true
         },
         "wifi-ssid": {
-            "value": "\"this_LAN_is_our_LAN\""
+            "value": "\father_LAN\""
         },
         "wifi-password": {
-            "value": "\"weedistight\""
+            "value": "\"schlongdong\""
         }
     },
     "target_overrides": {
