@@ -16,10 +16,10 @@
             "value": true
         },
         "wifi-ssid": {
-            "value": "\father_LAN\""
+            "value": "\"USC Guest Wireless\""
         },
         "wifi-password": {
-            "value": "\"schlongdong\""
+            "value": "\"\""
         }
     },
     "target_overrides": {
