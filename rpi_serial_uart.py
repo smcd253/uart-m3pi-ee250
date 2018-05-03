@@ -1,7 +1,8 @@
 import serial
 import time
 
-port = "/dev/ttyS0"    # Raspberry Pi 3
+# port = "/dev/ttyS0"    # Raspberry Pi 3
+port = "/dev/serial0"    # Raspberry Pi 3
 
 def readLine(port):
     s = ""
