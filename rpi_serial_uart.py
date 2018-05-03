@@ -12,7 +12,7 @@ def readLine(port):
         if ch == '\r':
             return s
 
-ser = serial.Serial(port, baudrate = 115200)
+ser = serial.Serial(port, baudrate = 9600)
 print "starting"
 while True:
     time.sleep(1)
