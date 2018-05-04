@@ -79,9 +79,9 @@ def main_meth(x):
             speed 
             print("speed[0] = " + str(speed[0]))
             ser.write('2')
-            ser.write(speed[0])
-            ser.write(speed[1])
-            ser.write(speed[2])
+            ser.write(str(speed[0]))
+            ser.write(str(speed[1]))
+            ser.write(str(speed[2]))
         except NameError:
             print("no speed")
             
@@ -99,9 +99,9 @@ def main_meth(x):
             speed 
             print("speed[0] = " + str(speed[0]))
             ser.write('3')
-            ser.write(speed[0])
-            ser.write(speed[1])
-            ser.write(speed[2])
+            ser.write(str(speed[0]))
+            ser.write(str(speed[1]))
+            ser.write(str(speed[2]))
         except NameError:
             print("no speed")
         # speed_show = ''.join(speed) 
