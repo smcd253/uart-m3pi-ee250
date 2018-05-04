@@ -68,6 +68,7 @@ enum COMMANDS{
 } commands;
 
 // receive buffer
+int i = 0;
 char rcv[BUF_SIZE];
 
 void movement(char command, char speed, int delta_t)
@@ -100,7 +101,14 @@ void movement(char command, char speed, int delta_t)
 
 void serial_in() {
     // Note: you need to actually read from the serial to clear the RX interrupt
-    printf("%c\n", rpi.getc());
+    if (i < BUF_SIZE){
+        rcv[i] = rpi.getc();
+        i++;
+    } 
+    else{
+        i = 0;
+    }
+    printf("rcv[] = %s", rcv);
 }
 
 void _switch(char* message){
@@ -189,7 +197,7 @@ int main()
         int arraySize = sizeof(rcv);
         printf("array size: %i", arraySize);
 
-        if (sizeof(rcv) == BUF_SIZE){
+        if (i == BUF_SIZE){
             _switch(rcv);
         }
         
