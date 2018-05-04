@@ -106,12 +106,13 @@ void serial_in() {
     // Note: you need to actually read from the serial to clear the RX interrupt
     if (i < BUF_SIZE){
         rcv[i] = (int)rpi.getc();
+        printf("rcv[%i] = %i", i, rcv[i]);
         i++;
     } 
     else{
         i = 0;
     }
-    printf("rcv[] = %s", rcv);
+    // printf("rcv[] = %s", rcv);
 }
 
 void _switch(int* message){
@@ -201,8 +202,8 @@ int main()
     printf("UART Initialized!\n");
 
     while(1){
-        int arraySize = sizeof(rcv);
-        printf("array size: %i", arraySize);
+        // int arraySize = sizeof(rcv)/sizeof(rcv[0]);
+        // printf("array size: %i\n", arraySize);
 
         if (i == BUF_SIZE){
             _switch(rcv);
