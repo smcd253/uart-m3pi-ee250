@@ -77,6 +77,7 @@ int rcv[BUF_SIZE];
 // rcv[3] is speed ones
 
 int speed;
+int select;
 
 void movement(char command, char speed, int delta_t)
 {
@@ -114,7 +115,7 @@ void serial_in() {
         i++;
     } 
     else{
-        command = rcv[0];
+        select = rcv[0];
         speed = rcv[1] + rcv[2] + rcv[3];
         i = 0;
     }
