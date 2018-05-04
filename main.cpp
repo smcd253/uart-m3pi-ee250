@@ -112,6 +112,7 @@ Serial rpi(p13, p14, 9600);  // tx, rx
 void callback() {
     // Note: you need to actually read from the serial to clear the RX interrupt
     printf("%c\n", rpi.getc());
+    printf("callback called\n");
 }
 
 int main()
