@@ -17,9 +17,8 @@ print("starting")
 while True:
     time.sleep(1)
     print("sending synch")
-    ser.write('A')
+    ser.write('ABCD')
     # rcv = readLine(ser)
     # print "received:", rcv
     c = ser.readline()
-    strc = str(c)
     print "received: " + c
