@@ -72,11 +72,11 @@ def main_meth(x):
     # 0: FORWARD, 1: REVERSE, 2: RIGHT_STILL, 3: LEFT_STILL, 4: STOP
     if (_speed > 0): # right
         # speed = [chr(_speed // 100), chr(_speed // 10), chr(_speed // 1)]   
-        speed = [_speed // 100, _speed // 10, _speed // 1]   
+        speed = [_speed / 100, _speed / 10, _speed / 1]   
         
         try:
             speed 
-            print("speed[0] = " + speed[0])
+            print("speed[0] = " + str(speed[0])
             ser.write('2')
             # ser.write(speed[0])
             # ser.write(speed[1])
@@ -94,7 +94,7 @@ def main_meth(x):
         speed = [chr(_speed // 100), chr(_speed // 10), chr(_speed // 1)]
         try:
             speed 
-            print("speed[0] = " + speed[0])
+            print("speed[0] = " + str(speed[0])
             ser.write('3')
             # ser.write(speed[0])
             # ser.write(speed[1])
