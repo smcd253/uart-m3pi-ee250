@@ -127,7 +127,7 @@ void _switch(){
         // ----------- m3pi mod ------------
         case FORWARD:
             printf("LEDThread: received message to move FORWARD\n");
-            printf("Speed = %i\n", message[1]);
+            printf("Speed = %i\n", speed);
             // grab speed data
             // if(msg->content[2] != NULL){
             //     speed = int(msg->content[2]);
