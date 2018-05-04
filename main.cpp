@@ -63,7 +63,7 @@ m3pi m3pi(p23, p9, p10);
 enum COMMANDS{
     FORWARD,
     REVERSE,
-    RIGHT_STILL;
+    RIGHT_STILL,
     LEFT_STILL
 } commands;
 
@@ -200,7 +200,7 @@ int main()
         if (i == BUF_SIZE){
             _switch(rcv);
         }
-        
+
         // waiting for serial from rpi
         char A = 'A';
         rpi.printf("%c\n", A);
