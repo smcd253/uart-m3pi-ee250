@@ -77,7 +77,7 @@ int rcv[BUF_SIZE];
 // rcv[3] is speed ones
 
 int speed;
-int select;
+int select = STOP + 1;
 
 void movement(char command, char speed, int delta_t)
 {
@@ -124,26 +124,16 @@ void serial_in() {
 
 void _switch(){
 
-    switch(command){
+    switch(select){
         // ----------- m3pi mod ------------
         case FORWARD:
             printf("FORWARD\n");
             printf("Speed = %i\n", speed);
-            // grab speed data
-            // if(msg->content[2] != NULL){
-            //     speed = int(msg->content[2]);
-            //     m3pi.forward(speed);
-            //     printf("FORWARD with speed %i\n", speed);
-            //     if(msg->content[3] != NULL){
-            //         delta_t = int(msg->content[4]);
-            //         printf("Wait %ims\n", delta_t);
-            //         Thread::wait(delta_t);
-            //     }
-            //     else{
-            //         // wait 100ms
-            //         Thread::wait(100);
-            //     }
-            // }
+            grab speed data
+            
+            printf("Wait %ims\n", delta_t);
+            Thread::wait(delta_t);
+           
             break;
         case REVERSE:
             printf("REVERSE\n");
@@ -198,6 +188,7 @@ void _switch(){
             printf("default\n");
             break;
         // m3pi.stop(); 
+        select = STOP + ;
     }     
 }
 int main()
