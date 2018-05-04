@@ -109,7 +109,7 @@ void movement(char command, char speed, int delta_t)
 
 void serial_in() {
     // Note: you need to actually read from the serial to clear the RX interrupt
-    printf("%c\n", rpi.getNext();
+    printf("%c\n", rpi.getNext());
     printf("callback called\n");
 }
 
