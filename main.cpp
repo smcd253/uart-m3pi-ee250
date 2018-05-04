@@ -120,37 +120,13 @@ int main()
     // attach uart interrupt
     rpi.attach(&serial_in);
     printf("UART Initialized!\n");
-    
-
-    /* Uncomment this to see how the m3pi moves. This sequence of functions
-       represent w-a-s-d like controlling. Each button press moves the robot
-       at a speed of 25 (speed can be between -127 to 127) for 100 ms. Use
-       functions like this in your program to move your m3pi when you get 
-       MQTT messages! */
-    // movement('w', 25, 100);
-    // movement('w', 25, 100);
-    // movement('w', 25, 100);
-    // movement('w', 25, 100);
-    // movement('a', 25, 100);
-    // movement('a', 25, 100);
-    // movement('a', 25, 100);
-    // movement('a', 25, 100);
-    // movement('d', 25, 100);
-    // movement('d', 25, 100);
-    // movement('d', 25, 100);
-    // movement('d', 25, 100);
-    // movement('s', 25, 100);
-    // movement('s', 25, 100);
-    // movement('s', 25, 100);
-    // movement('s', 25, 100);
 
     while(1){
         // waiting for serial from rpi
+        char A[] = 'ABCD';
+        rpi.printf("%s\n", A);
+
         wait(1);
-        rpi.putc('A');
-        char A = 'A';
-        rpi.printf("%c\n", A);
-        rpi.printf("B\n");
     }
 
     return 0;
