@@ -148,7 +148,7 @@ int main()
         // waiting for serial from rpi
         wait(1);
         rpi.putc('A');
-        A = 'A';
+        char A = 'A';
         rpi.printf("%c\n", A);
         rpi.printf("B\n");
     }
