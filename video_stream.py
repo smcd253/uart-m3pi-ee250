@@ -38,7 +38,7 @@ def main_meth():
 		mask = cv2.erode(thresh, None, iterations=2)
 		mask = cv2.dilate(mask, None, iterations=2)
 		#find the contours of the image
-		image, contours = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+		image, contours, _ = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 		if len(contours) > 0:
 			c = max(contours, key=cv2.contourArea)
 			M = cv2.moments(c)
