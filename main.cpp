@@ -213,7 +213,7 @@ int main()
         // printf("array size: %i\n", arraySize);
 
         if (i == BUF_SIZE){
-            _switch(rcv);
+            _switch();
         }
 
         // waiting for serial from rpi
