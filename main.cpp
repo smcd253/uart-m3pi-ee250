@@ -130,63 +130,39 @@ void _switch(){
         case FORWARD:
             printf("FORWARD\n");
             printf("Speed = %i\n", speed);
-            
+
             m3pi.forward(speed);
             Thread::wait(delta_t);
             break;
         case REVERSE:
             printf("REVERSE\n");
             printf("Speed = %i\n", speed);
-            // movement('s', 25, 100);
+            
+            m3pi.backward(speed);
+            Thread::wait(delta_t);
             break;
         case RIGHT_STILL:
             printf("RIGHT_STILL\n");
             printf("Speed = %i\n", speed);
-            // grab speed data
-            // if(msg->content[2] != NULL){
-            //     speed = int(msg->content[2]);
-            //     m3pi.right(speed);
-            //     printf("Turn RIGHT with speed %i\n", speed);
-            //     if(msg->content[3] != NULL){
-            //         delta_t = int(msg->content[4]);
-            //         printf("Wait %ims\n", delta_t);
-            //         Thread::wait(delta_t);
-            //     }
-            //     else{
-            //         // wait 100ms
-            //         Thread::wait(100);
-            //     }   
-            // }
+            
+            m3pi.right(speed);
+            Thread::wait(delta_t);
             break;
         case LEFT_STILL:
             printf("LEFT_STILL\n");
             printf("Speed = %i\n", speed);
-            // grab speed data
-            // if(msg->content[2] != NULL){
-            //     speed = int(msg->content[2]);
-            //     m3pi.left(speed);
-            //     printf("Turn LEFT with speed %i\n", speed);
-            //     if(msg->content[3] != NULL){
-            //         delta_t = int(msg->content[4]);
-            //         printf("Wait %ims\n", delta_t);
-            //         Thread::wait(delta_t);
-            //     }
-            //     else{
-            //         // wait 100ms
-            //         Thread::wait(100);
-            //     }
-            // }
-            // movement('a', 25, 100);
+            
+            m3pi.left(speed);
+            Thread::wait(delta_t);
             break;
         case STOP:
             printf("STOP\n");
-            printf("Speed = %i\n", speed);
-            // m3pi.stop();
+            m3pi.stop();
             break;
         default:
             printf("default\n");
             break;
-        // m3pi.stop(); 
+        m3pi.stop(); 
         select = STOP + 1;
     }     
 }
