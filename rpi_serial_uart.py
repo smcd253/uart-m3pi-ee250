@@ -20,5 +20,5 @@ while True:
     ser.write('A')
     # rcv = readLine(ser)
     # print "received:", rcv
-    c = ser.readLine()
+    c = ser.readline()
     print("received: ", c)
