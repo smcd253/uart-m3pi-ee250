@@ -148,6 +148,7 @@ int main()
     while(1){
         // waiting for serial from rpi
         wait(1);
+        rpi.putc('A');
         
     }
 
