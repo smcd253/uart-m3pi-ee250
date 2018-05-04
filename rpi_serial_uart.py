@@ -15,10 +15,9 @@ def readLine(port):
 ser = serial.Serial(port, baudrate = 9600)
 print("starting")
 while True:
-    time.sleep(1)
-    print("sending synch")
-    ser.write('ABCD')
+    ser.write('1')
     # rcv = readLine(ser)
     # print "received:", rcv
     c = ser.readline()
     print "received: " + c
+    time.sleep(1)

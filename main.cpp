@@ -49,7 +49,7 @@
 #include "mbed.h"
 #include "m3pi.h"
 
-#define BUF_SIZE 4
+#define BUF_SIZE 2
 
 extern "C" void mbed_reset();
 
@@ -69,7 +69,9 @@ enum COMMANDS{
 
 // receive buffer
 int i = 0;
-char rcv[BUF_SIZE];
+int rcv[BUF_SIZE];
+// rcv[0] is direction
+// rcv[1] is speed
 
 void movement(char command, char speed, int delta_t)
 {
@@ -102,7 +104,7 @@ void movement(char command, char speed, int delta_t)
 void serial_in() {
     // Note: you need to actually read from the serial to clear the RX interrupt
     if (i < BUF_SIZE){
-        rcv[i] = rpi.getc();
+        rcv[i] = (int)rpi.getc();
         i++;
     } 
     else{
@@ -111,77 +113,81 @@ void serial_in() {
     printf("rcv[] = %s", rcv);
 }
 
-void _switch(char* message){
-    commands = message[0];
-    switch(commands){
+void _switch(int* message){
+    switch(message[0]){
         // ----------- m3pi mod ------------
         case FORWARD:
             printf("LEDThread: received message to move FORWARD\n");
+            printf("Speed = %i", message[1]);
             // grab speed data
-            if(msg->content[2] != NULL){
-                speed = int(msg->content[2]);
-                m3pi.forward(speed);
-                printf("FORWARD with speed %i\n", speed);
-                if(msg->content[3] != NULL){
-                    delta_t = int(msg->content[4]);
-                    printf("Wait %ims\n", delta_t);
-                    Thread::wait(delta_t);
-                }
-                else{
-                    // wait 100ms
-                    Thread::wait(100);
-                }
-            }
+            // if(msg->content[2] != NULL){
+            //     speed = int(msg->content[2]);
+            //     m3pi.forward(speed);
+            //     printf("FORWARD with speed %i\n", speed);
+            //     if(msg->content[3] != NULL){
+            //         delta_t = int(msg->content[4]);
+            //         printf("Wait %ims\n", delta_t);
+            //         Thread::wait(delta_t);
+            //     }
+            //     else{
+            //         // wait 100ms
+            //         Thread::wait(100);
+            //     }
+            // }
             break;
         case BACKWARD:
             printf("LEDThread: received message to move BACKWARD\n");
+            printf("Speed = %i", message[1]);
             // movement('s', 25, 100);
             break;
         case RIGHT_STILL:
             printf("LEDThread: received message to turn RIGHT\n");
+            printf("Speed = %i", message[1]);
             // grab speed data
-            if(msg->content[2] != NULL){
-                speed = int(msg->content[2]);
-                m3pi.right(speed);
-                printf("Turn RIGHT with speed %i\n", speed);
-                if(msg->content[3] != NULL){
-                    delta_t = int(msg->content[4]);
-                    printf("Wait %ims\n", delta_t);
-                    Thread::wait(delta_t);
-                }
-                else{
-                    // wait 100ms
-                    Thread::wait(100);
-                }   
-            }
+            // if(msg->content[2] != NULL){
+            //     speed = int(msg->content[2]);
+            //     m3pi.right(speed);
+            //     printf("Turn RIGHT with speed %i\n", speed);
+            //     if(msg->content[3] != NULL){
+            //         delta_t = int(msg->content[4]);
+            //         printf("Wait %ims\n", delta_t);
+            //         Thread::wait(delta_t);
+            //     }
+            //     else{
+            //         // wait 100ms
+            //         Thread::wait(100);
+            //     }   
+            // }
             break;
         case LEFT_STILL:
             printf("LEDThread: received message to turn LEFT\n");
+            printf("Speed = %i", message[1]);
             // grab speed data
-            if(msg->content[2] != NULL){
-                speed = int(msg->content[2]);
-                m3pi.left(speed);
-                printf("Turn LEFT with speed %i\n", speed);
-                if(msg->content[3] != NULL){
-                    delta_t = int(msg->content[4]);
-                    printf("Wait %ims\n", delta_t);
-                    Thread::wait(delta_t);
-                }
-                else{
-                    // wait 100ms
-                    Thread::wait(100);
-                }
-            }
+            // if(msg->content[2] != NULL){
+            //     speed = int(msg->content[2]);
+            //     m3pi.left(speed);
+            //     printf("Turn LEFT with speed %i\n", speed);
+            //     if(msg->content[3] != NULL){
+            //         delta_t = int(msg->content[4]);
+            //         printf("Wait %ims\n", delta_t);
+            //         Thread::wait(delta_t);
+            //     }
+            //     else{
+            //         // wait 100ms
+            //         Thread::wait(100);
+            //     }
+            // }
             // movement('a', 25, 100);
             break;
         case STOP:
             printf("LEDThread: received message to STOP\n");
-            m3pi.stop();
+            printf("Speed = %i", message[1]);
+            // m3pi.stop();
             break;
         default:
             printf("LEDThread: invalid message\n");
             break;
-        m3pi.stop(); 
+        // m3pi.stop(); 
     }     
 }
 int main()
@@ -202,8 +208,8 @@ int main()
         }
 
         // waiting for serial from rpi
-        char A = 'A';
-        rpi.printf("%c\n", A);
+        // char A = 'A';
+        // rpi.printf("%c\n", A);
         
         wait(1);
     }
