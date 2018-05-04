@@ -126,7 +126,7 @@ void _switch(){
     switch(command){
         // ----------- m3pi mod ------------
         case FORWARD:
-            printf("LEDThread: received message to move FORWARD\n");
+            printf("FORWARD\n");
             printf("Speed = %i\n", speed);
             // grab speed data
             // if(msg->content[2] != NULL){
@@ -145,13 +145,13 @@ void _switch(){
             // }
             break;
         case REVERSE:
-            printf("LEDThread: received message to move BACKWARD\n");
-            printf("Speed = %i\n", message[1]);
+            printf("REVERSE\n");
+            printf("Speed = %i\n", speed);
             // movement('s', 25, 100);
             break;
         case RIGHT_STILL:
-            printf("LEDThread: received message to turn RIGHT\n");
-            printf("Speed = %i\n", message[1]);
+            printf("RIGHT_STILL\n");
+            printf("Speed = %i\n", speed);
             // grab speed data
             // if(msg->content[2] != NULL){
             //     speed = int(msg->content[2]);
@@ -169,8 +169,8 @@ void _switch(){
             // }
             break;
         case LEFT_STILL:
-            printf("LEDThread: received message to turn LEFT\n");
-            printf("Speed = %i\n", message[1]);
+            printf("LEFT_STILL\n");
+            printf("Speed = %i\n", speed);
             // grab speed data
             // if(msg->content[2] != NULL){
             //     speed = int(msg->content[2]);
@@ -189,12 +189,12 @@ void _switch(){
             // movement('a', 25, 100);
             break;
         case STOP:
-            printf("LEDThread: received message to STOP\n");
-            printf("Speed = %i\n", message[1]);
+            printf("STOP\n");
+            printf("Speed = %i\n", speed);
             // m3pi.stop();
             break;
         default:
-            printf("LEDThread: invalid message\n");
+            printf("default\n");
             break;
         // m3pi.stop(); 
     }     
