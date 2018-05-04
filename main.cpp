@@ -123,8 +123,11 @@ int main()
 
     while(1){
         // waiting for serial from rpi
-        char A[] = 'ABCD';
-        rpi.printf("%s\n", A);
+        char A = 'A';
+        rpi.printf("%c\n", A);
+
+        string test = "please work";
+        rpi.printf("%s\n", test);
 
         wait(1);
     }
