@@ -94,7 +94,7 @@ def main_meth(x):
         speed = [chr(_speed // 100), chr(_speed // 10), chr(_speed // 1)]
         try:
             speed 
-            print("speed[0] = " + str(speed[0])
+            print("speed[0] = " + str(speed[0]))
             ser.write('3')
             # ser.write(speed[0])
             # ser.write(speed[1])
