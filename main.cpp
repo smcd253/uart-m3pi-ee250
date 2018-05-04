@@ -119,6 +119,7 @@ int main()
 {
     // attach uart interrupt
     rpi.attach(&callback);
+    printf("initialized callback");
 
     /* Uncomment this to see how the m3pi moves. This sequence of functions
        represent w-a-s-d like controlling. Each button press moves the robot
