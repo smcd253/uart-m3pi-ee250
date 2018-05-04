@@ -65,6 +65,7 @@ def main_meth(x):
         _speed = 255
     elif _speed < -255:
         _speed = -255
+    print("_speed = " + _speed)
     # decide left/right
     # if control < 0 --> m3pi is drifting right of line, 
     # use control variable to increase speed of left motor
