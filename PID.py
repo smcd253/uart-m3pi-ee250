@@ -74,16 +74,17 @@ def main_meth(x):
         try:
             speed 
             print("speed[0] = " + speed[0])
+            ser.write('2')
+            ser.write(speed[0])
+            ser.write(speed[1])
+            ser.write(speed[2])
         except NameError:
             print("no speed")
             
         # speed_show = ''.join(speed) 
         # print("speed = " + speed_show)   
         
-        ser.write('2')
-        # ser.write(speed[0])
-        # ser.write(speed[1])
-        # ser.write(speed[2])
+        
 
     elif (_speed < 0): #left
         _speed = _speed * (-1) # cannot pass negative values into bytearray   
@@ -91,15 +92,15 @@ def main_meth(x):
         try:
             speed 
             print("speed[0] = " + speed[0])
+            ser.write('3')
+            ser.write(speed[0])
+            ser.write(speed[1])
+            ser.write(speed[2])
         except NameError:
             print("no speed")
         # speed_show = ''.join(speed) 
         # print("speed = " + speed_show)   
-
-        ser.write('3')
-        ser.write(speed[0])
-        ser.write(speed[1])
-        ser.write(speed[2])         
+         
         
     else: #centered
         ser.write('4')
