@@ -6,7 +6,7 @@ import cv2
 import time
 import picamera
 import picamera.array
-import rpiMQTT_PID
+import PID
 
 def main_meth(client):
 	# initialize the camera and grab a reference to the raw camera capture
@@ -55,6 +55,6 @@ def main_meth(client):
 			else:
 				latest_reading = (width/2 - cx)
 				# show the frame
-			rpiMQTT_PID.main_meth(client, (width/2 - cx))
+			rpiMQTT_PID.main_meth(width/2 - cx)
 		rawCapture.truncate(0)
 		# if the `q` key was pressed, break from the loop
