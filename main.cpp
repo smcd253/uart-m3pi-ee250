@@ -49,7 +49,7 @@
 #include "mbed.h"
 #include "m3pi.h"
 
-#define BUF_SIZE 2
+#define BUF_SIZE 4
 
 extern "C" void mbed_reset();
 
@@ -71,8 +71,10 @@ enum COMMANDS{
 // receive buffer
 int i = 0;
 int rcv[BUF_SIZE];
-// rcv[0] is direction
-// rcv[1] is speed
+// rcv[0] is direction for switch case
+// rcv[1] is speed hundreds
+// rcv[2] is speed tens
+// rcv[3] is speed ones
 
 void movement(char command, char speed, int delta_t)
 {
@@ -105,7 +107,7 @@ void movement(char command, char speed, int delta_t)
 void serial_in() {
     // Note: you need to actually read from the serial to clear the RX interrupt
     if (i < BUF_SIZE){
-        rcv[i] = (int)rpi.getc();
+        rcv[i] = (int)rpi.getc() - 48;
         printf("rcv[%i] = %i", i, rcv[i]);
         i++;
     } 
