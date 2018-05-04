@@ -52,6 +52,8 @@
 
 extern "C" void mbed_reset();
 
+//uart
+Serial rpi(p13, p14, 9600);  // tx, rx
 
 /** Initialize the m3pi for robot movements. There is an atmega328p MCU in the
  *  3pi robot base. It's UART lines are connected to the LPC1768's p9 and p10.
@@ -105,11 +107,7 @@ void movement(char command, char speed, int delta_t)
     }
 }
 
-
-//uart
-Serial rpi(p13, p14, 9600);  // tx, rx
-
-void callback() {
+void serial_in() {
     // Note: you need to actually read from the serial to clear the RX interrupt
     printf("%c\n", rpi.getc());
     printf("callback called\n");
@@ -118,9 +116,12 @@ void callback() {
 int main()
 {
     wait(1); // delay startup
+    printf("before callback\n");
+    
     // attach uart interrupt
-    rpi.attach(&callback);
-    printf("initialized callback");
+    rpi.attach(&serial_in);
+    printf("after callback\n");
+    
 
     /* Uncomment this to see how the m3pi moves. This sequence of functions
        represent w-a-s-d like controlling. Each button press moves the robot
@@ -146,6 +147,8 @@ int main()
 
     while(1){
         // waiting for serial from rpi
+        wait(1);
+        
     }
 
     return 0;
