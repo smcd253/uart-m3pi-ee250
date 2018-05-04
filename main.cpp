@@ -130,11 +130,9 @@ void _switch(){
         case FORWARD:
             printf("FORWARD\n");
             printf("Speed = %i\n", speed);
-            grab speed data
             
-            printf("Wait %ims\n", delta_t);
+            m3pi.forward(speed);
             Thread::wait(delta_t);
-           
             break;
         case REVERSE:
             printf("REVERSE\n");
