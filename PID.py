@@ -61,6 +61,10 @@ def main_meth(x):
     corr = 1 # correction constant
     _speed = control * corr
 
+    if _speed > 255:
+        _speed = 255
+    elif _speed < -255:
+        _speed = -255
     # decide left/right
     # if control < 0 --> m3pi is drifting right of line, 
     # use control variable to increase speed of left motor
