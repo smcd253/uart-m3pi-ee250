@@ -110,17 +110,16 @@ void movement(char command, char speed, int delta_t)
 void serial_in() {
     // Note: you need to actually read from the serial to clear the RX interrupt
     printf("%c\n", rpi.getc());
-    printf("callback called\n");
 }
 
 int main()
 {
     wait(1); // delay startup
-    printf("before callback\n");
+    printf("UART Initializing...\n");
     
     // attach uart interrupt
     rpi.attach(&serial_in);
-    printf("after callback\n");
+    printf("UART Initialized!\n");
     
 
     /* Uncomment this to see how the m3pi moves. This sequence of functions
