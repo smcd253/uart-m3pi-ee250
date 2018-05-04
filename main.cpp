@@ -76,7 +76,7 @@ int rcv[BUF_SIZE];
 // rcv[2] is speed tens
 // rcv[3] is speed ones
 
-int speed;
+char speed;
 int select = STOP + 1;
 int delta_t = 100;
 
@@ -117,7 +117,7 @@ void serial_in() {
     } 
     else{
         select = rcv[0];
-        speed = rcv[1] * 100 + rcv[2] * 10 + rcv[3];
+        speed = (char)(rcv[1] * 100 + rcv[2] * 10 + rcv[3]);
         i = 0;
     }
     // printf("rcv[] = %s", rcv);
@@ -129,28 +129,28 @@ void _switch(){
         // ----------- m3pi mod ------------
         case FORWARD:
             printf("FORWARD\n");
-            printf("Speed = %i\n", speed);
+            printf("Speed = %c\n", speed);
 
             m3pi.forward(speed);
             Thread::wait(delta_t);
             break;
         case REVERSE:
             printf("REVERSE\n");
-            printf("Speed = %i\n", speed);
+            printf("Speed = %c\n", speed);
             
             m3pi.backward(speed);
             Thread::wait(delta_t);
             break;
         case RIGHT_STILL:
             printf("RIGHT_STILL\n");
-            printf("Speed = %i\n", speed);
+            printf("Speed = %c\n", speed);
             
             m3pi.right(speed);
             Thread::wait(delta_t);
             break;
         case LEFT_STILL:
             printf("LEFT_STILL\n");
-            printf("Speed = %i\n", speed);
+            printf("Speed = %c\n", speed);
             
             m3pi.left(speed);
             Thread::wait(delta_t);
