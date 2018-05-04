@@ -117,6 +117,7 @@ void callback() {
 
 int main()
 {
+    wait(1); // delay startup
     // attach uart interrupt
     rpi.attach(&callback);
     printf("initialized callback");
