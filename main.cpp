@@ -111,7 +111,7 @@ void serial_in() {
     // Note: you need to actually read from the serial to clear the RX interrupt
     if (i < BUF_SIZE){
         rcv[i] = (int)rpi.getc() - 48;
-        printf("rcv[%i] = %i\n", i, rcv[i]);
+        // printf("rcv[%i] = %i\n", i, rcv[i]);
         i++;
     } 
     else{
