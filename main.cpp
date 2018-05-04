@@ -116,7 +116,7 @@ void serial_in() {
     } 
     else{
         select = rcv[0];
-        speed = rcv[1] + rcv[2] + rcv[3];
+        speed = rcv[1] * 100 + rcv[2] * 10 + rcv[3];
         i = 0;
     }
     // printf("rcv[] = %s", rcv);
