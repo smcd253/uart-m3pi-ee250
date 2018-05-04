@@ -65,20 +65,22 @@ def main_meth(x):
         _speed = 255
     elif _speed < -255:
         _speed = -255
-    print("_speed = " + _speed)
+    print("_speed = " + str(_speed))
     # decide left/right
     # if control < 0 --> m3pi is drifting right of line, 
     # use control variable to increase speed of left motor
     # 0: FORWARD, 1: REVERSE, 2: RIGHT_STILL, 3: LEFT_STILL, 4: STOP
     if (_speed > 0): # right
-        speed = [chr(_speed // 100), chr(_speed // 10), chr(_speed // 1)]   
+        # speed = [chr(_speed // 100), chr(_speed // 10), chr(_speed // 1)]   
+        speed = [_speed // 100, _speed // 10, _speed // 1]   
+        
         try:
             speed 
             print("speed[0] = " + speed[0])
             ser.write('2')
-            ser.write(speed[0])
-            ser.write(speed[1])
-            ser.write(speed[2])
+            # ser.write(speed[0])
+            # ser.write(speed[1])
+            # ser.write(speed[2])
         except NameError:
             print("no speed")
             
@@ -94,9 +96,9 @@ def main_meth(x):
             speed 
             print("speed[0] = " + speed[0])
             ser.write('3')
-            ser.write(speed[0])
-            ser.write(speed[1])
-            ser.write(speed[2])
+            # ser.write(speed[0])
+            # ser.write(speed[1])
+            # ser.write(speed[2])
         except NameError:
             print("no speed")
         # speed_show = ''.join(speed) 
@@ -107,8 +109,8 @@ def main_meth(x):
         ser.write('4')
         try:
             speed
-            ser.write(speed[0])
-            ser.write(speed[1])
-            ser.write(speed[2]) 
+            # ser.write(speed[0])
+            # ser.write(speed[1])
+            # ser.write(speed[2]) 
         except NameError:
             print("no speed")
