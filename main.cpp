@@ -189,7 +189,7 @@ void _switch(){
             printf("default\n");
             break;
         // m3pi.stop(); 
-        select = STOP + ;
+        select = STOP + 1;
     }     
 }
 int main()
