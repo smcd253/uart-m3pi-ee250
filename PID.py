@@ -104,6 +104,10 @@ def main_meth(x):
         
     else: #centered
         ser.write('4')
-        ser.write(speed[0])
-        ser.write(speed[1])
-        ser.write(speed[2]) 
+        try:
+            speed
+            ser.write(speed[0])
+            ser.write(speed[1])
+            ser.write(speed[2]) 
+        except NameError:
+            print("no speed")
