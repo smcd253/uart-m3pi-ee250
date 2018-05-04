@@ -78,6 +78,7 @@ int rcv[BUF_SIZE];
 
 int speed;
 int select = STOP + 1;
+int delta_t = 100;
 
 void movement(char command, char speed, int delta_t)
 {
