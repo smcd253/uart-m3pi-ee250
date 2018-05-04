@@ -66,7 +66,7 @@ enum COMMANDS{
     RIGHT_STILL,
     LEFT_STILL,
     STOP
-} commands;
+} command;
 
 // receive buffer
 int i = 0;
@@ -75,6 +75,8 @@ int rcv[BUF_SIZE];
 // rcv[1] is speed hundreds
 // rcv[2] is speed tens
 // rcv[3] is speed ones
+
+int speed;
 
 void movement(char command, char speed, int delta_t)
 {
@@ -108,21 +110,24 @@ void serial_in() {
     // Note: you need to actually read from the serial to clear the RX interrupt
     if (i < BUF_SIZE){
         rcv[i] = (int)rpi.getc() - 48;
-        printf("rcv[%i] = %i", i, rcv[i]);
+        printf("rcv[%i] = %i\n", i, rcv[i]);
         i++;
     } 
     else{
+        command = rcv[0];
+        speed = rcv[1] + rcv[2] + rcv[3];
         i = 0;
     }
     // printf("rcv[] = %s", rcv);
 }
 
-void _switch(int* message){
-    switch(message[0]){
+void _switch(){
+
+    switch(command){
         // ----------- m3pi mod ------------
         case FORWARD:
             printf("LEDThread: received message to move FORWARD\n");
-            printf("Speed = %i", message[1]);
+            printf("Speed = %i\n", message[1]);
             // grab speed data
             // if(msg->content[2] != NULL){
             //     speed = int(msg->content[2]);
@@ -141,12 +146,12 @@ void _switch(int* message){
             break;
         case REVERSE:
             printf("LEDThread: received message to move BACKWARD\n");
-            printf("Speed = %i", message[1]);
+            printf("Speed = %i\n", message[1]);
             // movement('s', 25, 100);
             break;
         case RIGHT_STILL:
             printf("LEDThread: received message to turn RIGHT\n");
-            printf("Speed = %i", message[1]);
+            printf("Speed = %i\n", message[1]);
             // grab speed data
             // if(msg->content[2] != NULL){
             //     speed = int(msg->content[2]);
@@ -165,7 +170,7 @@ void _switch(int* message){
             break;
         case LEFT_STILL:
             printf("LEDThread: received message to turn LEFT\n");
-            printf("Speed = %i", message[1]);
+            printf("Speed = %i\n", message[1]);
             // grab speed data
             // if(msg->content[2] != NULL){
             //     speed = int(msg->content[2]);
@@ -185,7 +190,7 @@ void _switch(int* message){
             break;
         case STOP:
             printf("LEDThread: received message to STOP\n");
-            printf("Speed = %i", message[1]);
+            printf("Speed = %i\n", message[1]);
             // m3pi.stop();
             break;
         default:
