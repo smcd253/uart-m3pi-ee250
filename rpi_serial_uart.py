@@ -19,6 +19,5 @@ while True:
     print("sending synch")
     A = bytearray(0x01)
     ser.write(A)
-    ser.write('\n')
     # rcv = readLine(ser)
     # print "received:", rcv
