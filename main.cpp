@@ -126,7 +126,7 @@ int main()
         char A = 'A';
         rpi.printf("%c\n", A);
 
-        string test = "please work";
+        String test = "please work";
         rpi.printf("%s\n", test);
 
         wait(1);
