@@ -64,7 +64,8 @@ enum COMMANDS{
     FORWARD,
     REVERSE,
     RIGHT_STILL,
-    LEFT_STILL
+    LEFT_STILL,
+    STOP
 } commands;
 
 // receive buffer
@@ -135,7 +136,7 @@ void _switch(int* message){
             //     }
             // }
             break;
-        case BACKWARD:
+        case REVERSE:
             printf("LEDThread: received message to move BACKWARD\n");
             printf("Speed = %i", message[1]);
             // movement('s', 25, 100);
