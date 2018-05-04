@@ -49,36 +49,27 @@
 #include "mbed.h"
 #include "m3pi.h"
 
+#define BUF_SIZE 4
 
 extern "C" void mbed_reset();
 
 //uart
 Serial rpi(p13, p14, 9600);  // tx, rx
 
-/** Initialize the m3pi for robot movements. There is an atmega328p MCU in the
- *  3pi robot base. It's UART lines are connected to the LPC1768's p9 and p10.
- *  If you send the right sequence of UART characters to the atmega328p, it will
- *  move the robot for you. We provide a movement() function below for you to use
- */
+/** Initialize the m3pi for robot movements*/
 m3pi m3pi(p23, p9, p10);
 
+// switch case enum
+enum COMMANDS{
+    FORWARD,
+    REVERSE,
+    RIGHT_STILL;
+    LEFT_STILL
+} commands;
 
-/**
- * @brief      controls movement of the 3pi
- *
- *  If you want to use this function in a file outside of main.cpp, the easiest
- *  way to get access to it is to add
- *      
- *      extern movement(char command, char speed, int delta_t)
- *
- * in the .cpp file in which you want to use it.
- *
- * @param[in]  command  The movement command
- * @param[in]  speed    The speed of the movement (start by trying 25)
- * @param[in]  delta_t  The time for each movement in msec (start by trying 100)
- *
- * @return     { void }
- */
+// receive buffer
+char rcv[BUF_SIZE];
+
 void movement(char command, char speed, int delta_t)
 {
     if (command == 's')
@@ -112,6 +103,79 @@ void serial_in() {
     printf("%c\n", rpi.getc());
 }
 
+void _switch(char* message){
+    commands = message[0];
+    switch(commands){
+        // ----------- m3pi mod ------------
+        case FORWARD:
+            printf("LEDThread: received message to move FORWARD\n");
+            // grab speed data
+            if(msg->content[2] != NULL){
+                speed = int(msg->content[2]);
+                m3pi.forward(speed);
+                printf("FORWARD with speed %i\n", speed);
+                if(msg->content[3] != NULL){
+                    delta_t = int(msg->content[4]);
+                    printf("Wait %ims\n", delta_t);
+                    Thread::wait(delta_t);
+                }
+                else{
+                    // wait 100ms
+                    Thread::wait(100);
+                }
+            }
+            break;
+        case BACKWARD:
+            printf("LEDThread: received message to move BACKWARD\n");
+            // movement('s', 25, 100);
+            break;
+        case RIGHT_STILL:
+            printf("LEDThread: received message to turn RIGHT\n");
+            // grab speed data
+            if(msg->content[2] != NULL){
+                speed = int(msg->content[2]);
+                m3pi.right(speed);
+                printf("Turn RIGHT with speed %i\n", speed);
+                if(msg->content[3] != NULL){
+                    delta_t = int(msg->content[4]);
+                    printf("Wait %ims\n", delta_t);
+                    Thread::wait(delta_t);
+                }
+                else{
+                    // wait 100ms
+                    Thread::wait(100);
+                }   
+            }
+            break;
+        case LEFT_STILL:
+            printf("LEDThread: received message to turn LEFT\n");
+            // grab speed data
+            if(msg->content[2] != NULL){
+                speed = int(msg->content[2]);
+                m3pi.left(speed);
+                printf("Turn LEFT with speed %i\n", speed);
+                if(msg->content[3] != NULL){
+                    delta_t = int(msg->content[4]);
+                    printf("Wait %ims\n", delta_t);
+                    Thread::wait(delta_t);
+                }
+                else{
+                    // wait 100ms
+                    Thread::wait(100);
+                }
+            }
+            // movement('a', 25, 100);
+            break;
+        case STOP:
+            printf("LEDThread: received message to STOP\n");
+            m3pi.stop();
+            break;
+        default:
+            printf("LEDThread: invalid message\n");
+            break;
+        m3pi.stop(); 
+    }     
+}
 int main()
 {
     wait(1); // delay startup
@@ -122,13 +186,17 @@ int main()
     printf("UART Initialized!\n");
 
     while(1){
+        int arraySize = sizeof(rcv);
+        printf("array size: %i", arraySize);
+
+        if (sizeof(rcv) == BUF_SIZE){
+            _switch(rcv);
+        }
+        
         // waiting for serial from rpi
         char A = 'A';
         rpi.printf("%c\n", A);
-
-        String test = "please work";
-        rpi.printf("%s\n", test);
-
+        
         wait(1);
     }
 
