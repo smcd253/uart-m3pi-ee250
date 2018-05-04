@@ -8,7 +8,7 @@ import picamera
 import picamera.array
 import PID
 
-def main_meth(client):
+def main_meth():
 	# initialize the camera and grab a reference to the raw camera capture
 	camera = PiCamera()
 	camera.resolution = (640, 480)
@@ -55,6 +55,6 @@ def main_meth(client):
 			else:
 				latest_reading = (width/2 - cx)
 				# show the frame
-			rpiMQTT_PID.main_meth(width/2 - cx)
+			PID.main_meth(width/2 - cx)
 		rawCapture.truncate(0)
 		# if the `q` key was pressed, break from the loop
